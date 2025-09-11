@@ -12,7 +12,7 @@
 #' @return CmdStanMCMC object containing fitted model
 #' @export
 #' @importFrom cmdstanr cmdstan_model
-fit_evt_model <- function(
+fit_mod <- function(
   maxima,
   model_type = c("evt", "efs", "efsmult"),
   chains = 4,

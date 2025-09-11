@@ -3,7 +3,7 @@
 export(G_max)
 export(dtnorm)
 export(est_max)
-export(fit_evt_model)
+export(fit_mod)
 export(g_max)
 export(get_cdf)
 export(get_pdf)
