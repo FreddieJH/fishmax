@@ -23,11 +23,19 @@ You can install the development version of fishEVA from
 ``` r
 # install.packages("pak")
 pak::pak("FreddieJH/fishEVA")
-#> ✔ Updated metadata database: 5.39 MB in 4 files.
-#> ℹ Updating metadata database✔ Updating metadata database ... done
-#>  
-#> ℹ No downloads are needed
-#> ✔ 1 pkg + 49 deps: kept 37 [30.9s]
+## ℹ Loading metadata database✔ Loading metadata database ... done
+##  
+## → Will update 1 package.
+## → Will download 1 package with unknown size.
+## + fishEVA 0.0.0.9000 → 0.0.0.9000 [bld][cmp][dl] (GitHub: ac83420)
+## ℹ Getting 1 pkg with unknown size
+## ✔ Got fishEVA 0.0.0.9000 (source) (3.36 MB)
+## ℹ Packaging fishEVA 0.0.0.9000
+## ✔ Packaged fishEVA 0.0.0.9000 (7.8s)
+## ℹ Building fishEVA 0.0.0.9000
+## ✔ Built fishEVA 0.0.0.9000 (24.3s)
+## ✔ Installed fishEVA 0.0.0.9000 (github::FreddieJH/fishEVA@ac83420) (660ms)
+## ✔ 1 pkg + 44 deps: kept 32, upd 1, dld 1 (NA B) [58.4s]
 ```
 
 ## Example

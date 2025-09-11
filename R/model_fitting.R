@@ -61,13 +61,21 @@ fit_mod <- function(
 
   model_file <- system.file(
     "stan",
-    paste0(
-      "inst/stan/",
-      ifelse(model_type == "efsmult", "efs", model_type),
-      ".stan"
-    ),
-    package = "fishEVA"
+    paste0(ifelse(model_type == "efsmult", "efs", model_type), ".stan"),
+    package = "marineEVT"
   )
+
+  if (!file.exists(model_file) || model_file == "") {
+    stop(
+      "Stan model file not found. Available files: ",
+      paste(
+        list.files(system.file("stan", package = "marineEVT")),
+        collapse = ", "
+      ),
+      "\nLooking for: ",
+      paste0(ifelse(model_type == "efsmult", "efs", model_type), ".stan")
+    )
+  }
 
   mod <- cmdstanr::cmdstan_model(model_file)
 
