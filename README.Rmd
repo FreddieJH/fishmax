@@ -2,9 +2,10 @@
 output: github_document
 ---
 
-```{r, include = FALSE}
+```{r, include = FALSE, message=FALSE }
 knitr::opts_chunk$set(
   collapse = TRUE,
+  comment = "#>",
   fig.path = "man/figures/README-",
   out.width = "100%"
 )
@@ -21,7 +22,7 @@ The goal of fishEVA is to use Extreme Value Analysis (EVA) to estimate the maxim
 
 You can install the development version of fishEVA from [GitHub](https://github.com/) with:
 
-```{r}
+```{r message=FALSE}
 # install.packages("pak")
 pak::pak("FreddieJH/fishEVA")
 ```
