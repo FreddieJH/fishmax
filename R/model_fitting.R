@@ -19,6 +19,23 @@ fit_mod <- function(
   iter_warmup = 9000,
   iter_sampling = 1000
 ) {
+  # Auto-install cmdstanr if not available
+  if (!requireNamespace("cmdstanr", quietly = TRUE)) {
+    message("Installing cmdstanr...")
+    install.packages(
+      "cmdstanr",
+      repos = c("https://stan-dev.r-universe.dev", getOption("repos"))
+    )
+
+    if (!requireNamespace("cmdstanr", quietly = TRUE)) {
+      stop("Failed to install cmdstanr")
+    }
+
+    # Install CmdStan
+    message("Installing CmdStan...")
+    cmdstanr::install_cmdstan()
+  }
+
   model_type <- match.arg(model_type)
   maxima_list <- as.list(maxima)
 
@@ -44,8 +61,12 @@ fit_mod <- function(
 
   model_file <- system.file(
     "stan",
-    paste0(ifelse(model_type == "efsmult", "efs", model_type), ".stan"),
-    package = "marineEVT"
+    paste0(
+      "inst/stan/",
+      ifelse(model_type == "efsmult", "efs", model_type),
+      ".stan"
+    ),
+    package = "fishEVA"
   )
 
   mod <- cmdstanr::cmdstan_model(model_file)

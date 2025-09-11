@@ -87,7 +87,7 @@ get_pdf <- function(fit, xmin = 0, xmax = 300, xstep = 1, ci = 0.8) {
       } else {
         purrr::pmap_dbl(
           list(x = size, distr = "tnorm", n = lambda, par1 = mu, par2 = sigma),
-          g_max
+          pdf_max
         )
       }
     ) |>
@@ -148,7 +148,7 @@ get_cdf <- function(fit, xmin = 0, xmax = 300, xstep = 1, ci = 0.8) {
       } else {
         purrr::pmap_dbl(
           list(x = size, distr = "tnorm", n = lambda, par1 = mu, par2 = sigma),
-          G_max
+          cdf_max
         )
       }
     ) |>

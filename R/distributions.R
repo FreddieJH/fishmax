@@ -50,23 +50,23 @@ rtnorm <- function(x, par1, par2) {
 #'
 #' @return Vector of density values
 #' @export
-g_max <- function(x, distr, n, par1, par2) {
+pdf_max <- function(x, distr, n, par1, par2) {
   f_x <- function(x) get(paste0("d", distr))(x, par1, par2)
   F_x <- function(x) get(paste0("p", distr))(x, par1, par2)
 
-  log_g_max <- log(n) + (n - 1) * log(F_x(x)) + log(f_x(x))
-  exp(log_g_max)
+  log_pdf_max <- log(n) + (n - 1) * log(F_x(x)) + log(f_x(x))
+  exp(log_pdf_max)
 }
 
 #' CDF of maxima
 #'
 #' Computes the cumulative distribution function of sample maxima
 #'
-#' @inheritParams g_max
+#' @inheritParams pdf_max
 #'
 #' @return Vector of cumulative probabilities
 #' @export
-G_max <- function(x, distr, n, par1, par2) {
+cdf_max <- function(x, distr, n, par1, par2) {
   F_x <- function(x) get(paste0("p", distr))(x, par1, par2)
   F_x(x)^n
 }
@@ -83,7 +83,7 @@ G_max <- function(x, distr, n, par1, par2) {
 #'
 #' @return Quantile value
 #' @export
-inverse_G_x <- function(
+inverse_cdf_x <- function(
   distr,
   n,
   par1,
@@ -93,7 +93,7 @@ inverse_G_x <- function(
   interval_upr = 1000
 ) {
   uniroot(
-    function(x) G_max(x, distr = distr, n = n, par1 = par1, par2 = par2) - p,
+    function(x) cdf_max(x, distr = distr, n = n, par1 = par1, par2 = par2) - p,
     lower = interval_lwr,
     upper = interval_upr
   )$root
