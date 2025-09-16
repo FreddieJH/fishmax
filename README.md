@@ -57,8 +57,8 @@ number of sample maxima used to fit the model.
 
 ``` r
 # estimate the 20-sample LMAX , showing 80% credible intervals
-est_max(evt_fit, ci = 0.8, k = 20)
-est_max(efs_fit, ci = 0.8, k = 20)
+est_max(fit = evt_fit, ci = 0.8, k = 20)
+est_max(fit = efs_fit, ci = 0.8, k = 20)
 ```
 
 ### Visualise the $L_{max}$ estimates

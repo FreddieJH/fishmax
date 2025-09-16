@@ -86,7 +86,7 @@ fit_mod <- function(
     iter_warmup = iter_warmup,
     iter_sampling = iter_sampling,
     adapt_delta = 0.999, # to avoid the small number of divergent transitions
-    max_depth = 12 # increased from 10 to 12 after increasing the adapt_delta
+    max_treedepth = 12 # increased from 10 to 12 after increasing the adapt_delta
   )
 
   fit

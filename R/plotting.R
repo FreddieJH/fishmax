@@ -139,7 +139,10 @@ plot_model_comparison <- function(
     ggplot2::theme_classic(20) +
     ggplot2::theme(legend.position = "none")
 
-  p_main +
-    p_partb +
-    patchwork::plot_layout(ncol = 1, heights = c(5, 1))
+  patchwork::wrap_plots(
+    p_main,
+    p_partb,
+    ncol = 1,
+    heights = c(5, 1)
+  )
 }

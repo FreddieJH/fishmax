@@ -674,8 +674,8 @@ is an arbitrary number but we recommend this value for consistency. Note
 that this is <strong>not</strong> the number of sample maxima used to
 fit the model.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># estimate the 20-sample LMAX , showing 80% credible intervals</span></span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="fu">est_max</span>(evt_fit, <span class="at">ci =</span> <span class="fl">0.8</span>, <span class="at">k =</span> <span class="dv">20</span>)</span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="fu">est_max</span>(efs_fit, <span class="at">ci =</span> <span class="fl">0.8</span>, <span class="at">k =</span> <span class="dv">20</span>)</span></code></pre></div>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="fu">est_max</span>(<span class="at">fit =</span> evt_fit, <span class="at">ci =</span> <span class="fl">0.8</span>, <span class="at">k =</span> <span class="dv">20</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="fu">est_max</span>(<span class="at">fit =</span> efs_fit, <span class="at">ci =</span> <span class="fl">0.8</span>, <span class="at">k =</span> <span class="dv">20</span>)</span></code></pre></div>
 <h3 id="visualise-the-l_max-estimates">Visualise the <span class="math inline">\(L_{max}\)</span> estimates</h3>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># visualise the fit of both the models</span></span>
 <span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="fu">plot_model_comparison</span>(</span>
