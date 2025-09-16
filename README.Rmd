@@ -4,6 +4,7 @@ output: github_document
 
 ```{r, include = FALSE, message=FALSE }
 knitr::opts_chunk$set(
+  eval = FALSE,
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-",
@@ -45,18 +46,24 @@ efs_fit <- fit_mod(length_maxima, model_type = "efs")
 ### Get $L_{nax}$ estimates
 
 ```{r}
-est_max(evt_fit)
-est_max(efs_fit)
+# estimate LMAX based on 20 samples, showing 80% credible intervals
+est_max(evt_fit, ci = 0.8, k = 20)
+est_max(efs_fit, ci = 0.8, k = 20)
 ```
 
 ### Visualise the $L_{nax}$ estimates
 
-```{r}
-plot_model_comparison(evt_fit = evt_fit, efs_fit = efs_fit)
+```{r visualisation}
+plot_model_comparison(
+  evt_fit = evt_fit,
+  efs_fit = efs_fit,
+  data_vector = length_maxima
+)
 ```
 
 ### Check the model fit with traceplots
 
-```{r include = TRUE}
+```{r traceplot}
 traceplot(evt_fit)
+traceplot(efs_fit)
 ```
