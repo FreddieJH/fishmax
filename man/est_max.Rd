@@ -14,8 +14,8 @@ est_max(fit, ci = 0.8, k = 20)
 \item{k}{The k-sample LMAX. By default this is set to 20, for ease of comparison between studies and species. Note that this is not the number of sample maxima used to fit the model. (default: 20)}
 }
 \value{
-Vector of c(estimate, lower CI, upper CI)
+Tibble of maximum length, lower and upper confidence intervals
 }
 \description{
-Estimates maximum size given 'return period' k
+Estimates maximum , with uncertainty, size given k-samples
 }
