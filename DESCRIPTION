@@ -1,4 +1,4 @@
-Package: fishEVA
+Package: fishmax
 Title: Estimation of Fish Maximum Length
 Version: 0.0.0.9000
 Authors@R: 
@@ -20,11 +20,12 @@ Imports:
     evd,
     scales,
     patchwork,
-    magrittr
-Suggests:
+    magrittr,
     cmdstanr,
+    methods,
+    knitr
+Suggests:
     testthat (>= 3.0.0),
-    knitr,
     rmarkdown,
     magick,
     grid

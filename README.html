@@ -601,13 +601,13 @@ padding-top: 0px;
 
 <body>
 
-<h1 id="fisheva">fishEVA</h1>
+<h1 id="fishmax">fishmax</h1>
 <!-- badges: start -->
 
 <!-- badges: end -->
 
-<p>The goal of fishEVA is to use Extreme Value Analysis (EVA) to
-estimate the maximum body length of fishes. The packages uses two
+<p>The goal of fishmax provides a robust method to estimate the maximum
+body length of fishes, with uncertanty. The packages uses two
 approaches, the first is from Extreme Value Theory (EVT), which shows
 that the maxima of a set of samples follows a specific distribution -
 the Generalised Extreme Value (GEV) distribution. The second approach
@@ -616,17 +616,17 @@ likely parameters of the underlying distribution that would give rise to
 the observed sample maxima. The two approaches are implemented using a
 Bayesian Framework.</p>
 <h2 id="installation">Installation</h2>
-<p>You can install the development version of fishEVA from <a href="https://github.com/">GitHub</a> with:</p>
+<p>You can install the development version of fishmax from <a href="https://github.com/">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># install.packages(&quot;pak&quot;)</span></span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>pak<span class="sc">::</span><span class="fu">pak</span>(<span class="st">&quot;FreddieJH/fishEVA&quot;</span>)</span></code></pre></div>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>pak<span class="sc">::</span><span class="fu">pak</span>(<span class="st">&quot;FreddieJH/fishmax&quot;</span>)</span></code></pre></div>
 <h2 id="example">Example</h2>
 <p>This is a basic example which shows you how to fit an EVT model to a
 set of maxima values:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">library</span>(fishEVA)</span>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">library</span>(fishmax)</span>
 <span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="do">## basic example code</span></span>
 <span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>length_maxima <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">40</span>, <span class="dv">41</span>, <span class="dv">35</span>, <span class="dv">42</span>, <span class="dv">31</span>) <span class="co">#cm</span></span>
 <span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="co"># model_fit &lt;- fit_mod(length_maxima, model_type = &quot;evt&quot;)</span></span></code></pre></div>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>model_fit <span class="ot">&lt;-</span> <span class="fu">fit_mod</span>(length_maxima, <span class="at">model_type =</span> <span class="st">&quot;evt&quot;</span>)</span></code></pre></div>
 
 </body>
 </html>

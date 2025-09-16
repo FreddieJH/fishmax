@@ -1,13 +1,13 @@
-#' fishEVA: Extreme Value Analysis for Marine Biology
+#' fishmax: Extreme Value Analysis for Estimating the maximum body length of fishes
 #'
 #' This package provides tools for extreme value analysis specifically
-#' designed for marine biological data. It implements both traditional
+#' designed for fish body max length. It implements both traditional
 #' Extreme Value Theory (EVT) and Extreme Fish Size (EFS) models using
 #' Bayesian methods via Stan.
 #'
 #' @docType package
-#' @name fishEVA-package
-#' @aliases fishEVA
+#' @name fishmax-package
+#' @aliases fishmax
 #' @import methods
 #' @importFrom magrittr %>%
 #'

@@ -62,14 +62,14 @@ fit_mod <- function(
   model_file <- system.file(
     "stan",
     paste0(ifelse(model_type == "efsmult", "efs", model_type), ".stan"),
-    package = ""
+    package = "fishmax"
   )
 
   if (!file.exists(model_file) || model_file == "") {
     stop(
       "Stan model file not found. Available files: ",
       paste(
-        list.files(system.file("stan", package = "fishEVA")),
+        list.files(system.file("stan", package = "fishmax")),
         collapse = ", "
       ),
       "\nLooking for: ",

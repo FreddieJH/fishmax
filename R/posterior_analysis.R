@@ -47,14 +47,14 @@ est_max <- function(fit, ci = 0.8, k) {
             par2 = sigma,
             p = 1 - (1 / k)
           ),
-          inverse_G_x
+          inverse_cdf_x
         )
       }
     ) |>
     dplyr::summarise(
       max_fit = mean(pdf),
-      max_lwr = quantile(pdf, (1 - ci) / 2),
-      max_upr = quantile(pdf, 1 - ((1 - ci) / 2))
+      max_lwr = stats::quantile(pdf, (1 - ci) / 2),
+      max_upr = stats::quantile(pdf, 1 - ((1 - ci) / 2))
     ) |>
     as.numeric()
 }
@@ -92,9 +92,9 @@ get_pdf <- function(fit, xmin = 0, xmax = 300, xstep = 1, ci = 0.8) {
       }
     ) |>
     dplyr::summarise(
-      pdf_fit = quantile(pdf, 0.5),
-      pdf_lwr = quantile(pdf, (1 - ci) / 2),
-      pdf_upr = quantile(pdf, 1 - ((1 - ci) / 2)),
+      pdf_fit = stats::quantile(pdf, 0.5),
+      pdf_lwr = stats::quantile(pdf, (1 - ci) / 2),
+      pdf_upr = stats::quantile(pdf, 1 - ((1 - ci) / 2)),
       .by = size
     )
 }
@@ -117,9 +117,9 @@ get_underlying <- function(fit, xmin = 0, xmax = 300, xstep = 1, ci = 0.8) {
       )
     ) |>
     dplyr::summarise(
-      pdf_fit = quantile(pdf, 0.5),
-      pdf_lwr = quantile(pdf, (1 - ci) / 2),
-      pdf_upr = quantile(pdf, 1 - ((1 - ci) / 2)),
+      pdf_fit = stats::quantile(pdf, 0.5),
+      pdf_lwr = stats::quantile(pdf, (1 - ci) / 2),
+      pdf_upr = stats::quantile(pdf, 1 - ((1 - ci) / 2)),
       .by = size
     )
 }
@@ -153,9 +153,97 @@ get_cdf <- function(fit, xmin = 0, xmax = 300, xstep = 1, ci = 0.8) {
       }
     ) |>
     dplyr::summarise(
-      cdf_fit = quantile(cdf, 0.5),
-      cdf_lwr = quantile(cdf, (1 - ci) / 2),
-      cdf_upr = quantile(cdf, 1 - ((1 - ci) / 2)),
+      cdf_fit = stats::quantile(cdf, 0.5),
+      cdf_lwr = stats::quantile(cdf, (1 - ci) / 2),
+      cdf_upr = stats::quantile(cdf, 1 - ((1 - ci) / 2)),
       .by = size
+    )
+}
+
+#' Quantile Estimates from a GEV Posterior
+#'
+#' Computes posterior predictive quantiles for extreme values using the
+#' Generalized Extreme Value (GEV) distribution parameters sampled from a
+#' posterior distribution.
+#'
+#' @param evt_fitted_model A fitted model object, created using the fit_mod(model_type = "evt") function
+#' @param q Numeric scalar giving the quantile probability to evaluate
+#'   (default = 0.95).
+#'
+#' @return A tibble with three summary statistics of the posterior quantile
+#'   distribution:
+#'   \item{fit}{Posterior median of the quantile}
+#'   \item{lwr}{10th percentile of the quantile distribution}
+#'   \item{upr}{90th percentile of the quantile distribution}
+#'
+#' @examples
+#' \dontrun{
+#' est_max_evt(evt_fitted_model, q = 0.99)
+#' }
+#'
+#' @importFrom dplyr mutate summarise
+#' @importFrom purrr pmap_dbl
+#' @importFrom evd qgev
+est_max_evt <- function(evt_fitted_mod, q = 0.95) {
+  evt_fitted_mod |>
+    get_posterior() |>
+    dplyr::mutate(
+      q = purrr::pmap_dbl(
+        .l = list(p = q, loc = loc, scale = scale, shape = shape),
+        .f = evd::qgev
+      )
+    ) |>
+    dplyr::summarise(
+      fit = stats::quantile(q, 0.5),
+      lwr = stats::quantile(q, 0.1),
+      upr = stats::quantile(q, 0.9)
+    )
+}
+
+#' Quantile Estimates from Truncated Normal-Based Posterior
+#'
+#' Computes posterior predictive quantiles for maximum values using a
+#' truncated-normal-based model of fish size distributions.
+#'
+#' @param posterior A fitted model object, created using the fit_mod(model_type = "efs") function
+#' @param q Numeric scalar giving the quantile probability to evaluate
+#'   (default = 0.95).
+#'
+#' @return A tibble with three summary statistics of the posterior quantile
+#'   distribution:
+#'   \item{fit}{Posterior median of the quantile}
+#'   \item{lwr}{10th percentile of the quantile distribution}
+#'   \item{upr}{90th percentile of the quantile distribution}
+#'
+#' @details This function requires an \code{inverse_cdf_x()} function to be
+#' defined, which computes quantiles for the truncated normal extreme value
+#' model.
+#'
+#' @examples
+#' \dontrun{
+#' est_max_efs(efs_fitted_model, q = 0.95)
+#' }
+#'
+#' @importFrom dplyr mutate summarise
+#' @importFrom purrr pmap_dbl
+est_max_efs <- function(fitted_mod, q = 0.95) {
+  fitted_mod |>
+    get_posterior() |>
+    dplyr::mutate(
+      q = purrr::pmap_dbl(
+        .l = list(
+          distr = "tnorm",
+          n = lambda,
+          par1 = mu,
+          par2 = sigma,
+          p = q
+        ),
+        .f = inverse_cdf_x
+      )
+    ) |>
+    dplyr::summarise(
+      fit = stats::quantile(q, 0.5),
+      lwr = stats::quantile(q, 0.1),
+      upr = stats::quantile(q, 0.9)
     )
 }

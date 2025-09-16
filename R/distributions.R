@@ -92,7 +92,7 @@ inverse_cdf_x <- function(
   interval_lwr = 1,
   interval_upr = 1000
 ) {
-  uniroot(
+  stats::uniroot(
     function(x) cdf_max(x, distr = distr, n = n, par1 = par1, par2 = par2) - p,
     lower = interval_lwr,
     upper = interval_upr

@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/articles/special-files.html
 
 library(testthat)
-library(fishEVA)
+library(fishmax)
 
-test_check("fishEVA")
+test_check("fishmax")
