@@ -39,6 +39,8 @@ traceplot <- function(fit) {
 #' @param data_vector Vector of observed maxima
 #' @param species_name Scientific name for plot annotation
 #' @param image_path Optional path to species image
+#' @param ci Credible interval width (default: 0.8)
+#' @param k The k-sample LMAX. By default this is set to 20, for ease of comparison between studies and species. Note that this is not the number of sample maxima used to fit the model. (default: 20)
 #'
 #' @return Combined ggplot object
 #' @export
@@ -50,7 +52,9 @@ plot_model_comparison <- function(
   efs_fit,
   data_vector,
   species_name = NULL,
-  image_path = NULL
+  image_path = NULL,
+  ci = 0.8,
+  k = 20
 ) {
   evt_pdf <- get_pdf(evt_fit)
   efs_pdf <- get_pdf(efs_fit)
@@ -101,5 +105,41 @@ plot_model_comparison <- function(
     ggplot2::labs(x = "Body size", y = "Probability density") +
     ggplot2::theme_classic(20)
 
-  p_main
+  p2_data <-
+    tibble(
+      evt = as.numeric(est_max(evt_fit, ci = ci, k = k)),
+      efs = as.numeric(est_max(efs_fit, ci = ci, k = k))
+    )
+
+  p_partb <-
+    p2_data |>
+    tidyr::unnest(cols = c(evt, efs)) |>
+    dplyr::mutate(pred = c("fit", "lwr", "upr")) |>
+    tidyr::pivot_longer(cols = evt:efs) |>
+    tidyr::pivot_wider(values_from = value, names_from = pred) |>
+    ggplot2::ggplot() +
+    ggplot2::aes(x = fit, y = name, col = name) +
+    ggplot2::geom_point(size = 5) +
+    ggplot2::geom_errorbarh(aes(xmin = lwr, xmax = upr), height = 0) +
+    ggplot2::aes(x = fit, y = name, col = name) +
+    ggplot2::labs(y = NULL, x = expression(paste("Estimated ", L[max]))) +
+    ggplot2::scale_y_discrete(
+      labels = c(
+        "evt" = paste0("EVT (k = ", k, ")"),
+        "efs" = paste0("EFS (k = ", k, ")")
+      )
+    ) +
+    scale_x_continuous(
+      labels = scales::label_number(suffix = "cm"),
+      limits = ggplot2::layer_scales(p_main)$x$range$range
+    ) +
+    ggplot2::scale_color_manual(
+      values = c("evt" = evt_colour, "efs" = efs_colour)
+    ) +
+    ggplot2::theme_classic(20) +
+    ggplot2::theme(legend.position = "none")
+
+  p_main +
+    p_partb +
+    patchwork::plot_layout(ncol = 1, heights = c(5, 1))
 }

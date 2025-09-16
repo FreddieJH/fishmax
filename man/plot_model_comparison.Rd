@@ -9,7 +9,9 @@ plot_model_comparison(
   efs_fit,
   data_vector,
   species_name = NULL,
-  image_path = NULL
+  image_path = NULL,
+  ci = 0.8,
+  k = 20
 )
 }
 \arguments{
@@ -22,6 +24,10 @@ plot_model_comparison(
 \item{species_name}{Scientific name for plot annotation}
 
 \item{image_path}{Optional path to species image}
+
+\item{ci}{Credible interval width (default: 0.8)}
+
+\item{k}{The k-sample LMAX. By default this is set to 20, for ease of comparison between studies and species. Note that this is not the number of sample maxima used to fit the model. (default: 20)}
 }
 \value{
 Combined ggplot object
