@@ -650,33 +650,44 @@ likely parameters of the underlying distribution that would give rise to
 the observed sample maxima. The two approaches are implemented using a
 Bayesian Framework.</p>
 <h2 id="installation">Installation</h2>
-<p>You can install the development version of fishmax from <a href="https://github.com/">GitHub</a> with:</p>
+<p>You can install the development version of fishmax with:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># install.packages(&quot;pak&quot;)</span></span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>pak<span class="sc">::</span><span class="fu">pak</span>(<span class="st">&quot;FreddieJH/fishmax&quot;</span>)</span></code></pre></div>
 <h2 id="example">Example</h2>
-<p>This is a basic example which shows you how to fit an EVT model to a
-set of maxima values:</p>
+<p>This is a basic example which shows you how to fit an EVT and EFS
+model to a set of maxima values:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">library</span>(fishmax)</span>
 <span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="co"># five example sample maxima (e.g., max from five fishing competitions)</span></span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>length_maxima <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">40</span>, <span class="dv">41</span>, <span class="dv">35</span>, <span class="dv">42</span>, <span class="dv">31</span>) <span class="co">#cm</span></span>
-<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>evt_fit <span class="ot">&lt;-</span> <span class="fu">fit_mod</span>(length_maxima, <span class="at">model_type =</span> <span class="st">&quot;evt&quot;</span>)</span>
-<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>efs_fit <span class="ot">&lt;-</span> <span class="fu">fit_mod</span>(length_maxima, <span class="at">model_type =</span> <span class="st">&quot;efs&quot;</span>)</span></code></pre></div>
-<h3 id="get-l_nax-estimates">Get <span class="math inline">\(L_{nax}\)</span> estimates</h3>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># estimate LMAX based on 20 samples, showing 80% credible intervals</span></span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">est_max</span>(evt_fit, <span class="at">ci =</span> <span class="fl">0.8</span>, <span class="at">k =</span> <span class="dv">20</span>)</span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="fu">est_max</span>(efs_fit, <span class="at">ci =</span> <span class="fl">0.8</span>, <span class="at">k =</span> <span class="dv">20</span>)</span></code></pre></div>
-<h3 id="visualise-the-l_nax-estimates">Visualise the <span class="math inline">\(L_{nax}\)</span> estimates</h3>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">plot_model_comparison</span>(</span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="at">evt_fit =</span> evt_fit,</span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="at">efs_fit =</span> efs_fit,</span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  <span class="at">data_vector =</span> length_maxima</span>
-<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>)</span></code></pre></div>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>length_maxima <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">40</span>, <span class="dv">41</span>, <span class="dv">35</span>, <span class="dv">42</span>, <span class="dv">31</span>) <span class="co">#cm</span></span></code></pre></div>
+<h3 id="model-fitting">Model fitting</h3>
+<p>First step is to fit the two models.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Extreme Value Theory (EVT) and Exact Finite Sample (EFS) models</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>evt_fit <span class="ot">&lt;-</span> <span class="fu">fit_mod</span>(length_maxima, <span class="at">model_type =</span> <span class="st">&quot;evt&quot;</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>efs_fit <span class="ot">&lt;-</span> <span class="fu">fit_mod</span>(length_maxima, <span class="at">model_type =</span> <span class="st">&quot;efs&quot;</span>)</span></code></pre></div>
+<h3 id="get-l_max-estimates">Get <span class="math inline">\(L_{max}\)</span> estimates</h3>
+<p>You can then obtain the estimates of <span class="math inline">\(L_{max}\)</span> from the models, chosing the
+credible interval of choice (here we use 80% credible intervals), and
+the 20-sample maxima. Here, we set <span class="math inline">\(k\)</span> to 20 (default value), to estimate
+<span class="math inline">\(L_{max}\)</span> if we had 20 samples, this
+is an arbitrary number but we recommend this value for consistency. Note
+that this is <strong>not</strong> the number of sample maxima used to
+fit the model.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># estimate the 20-sample LMAX , showing 80% credible intervals</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="fu">est_max</span>(evt_fit, <span class="at">ci =</span> <span class="fl">0.8</span>, <span class="at">k =</span> <span class="dv">20</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="fu">est_max</span>(efs_fit, <span class="at">ci =</span> <span class="fl">0.8</span>, <span class="at">k =</span> <span class="dv">20</span>)</span></code></pre></div>
+<h3 id="visualise-the-l_max-estimates">Visualise the <span class="math inline">\(L_{max}\)</span> estimates</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># visualise the fit of both the models</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="fu">plot_model_comparison</span>(</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  <span class="at">evt_fit =</span> evt_fit,</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>  <span class="at">efs_fit =</span> efs_fit,</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>  <span class="at">data_vector =</span> length_maxima</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>)</span></code></pre></div>
 <h3 id="check-the-model-fit-with-traceplots">Check the model fit with
 traceplots</h3>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">traceplot</span>(evt_fit)</span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="fu">traceplot</span>(efs_fit)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co"># check to make sure there is convergence of the model parameters</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="fu">traceplot</span>(evt_fit)</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="fu">traceplot</span>(efs_fit)</span></code></pre></div>
 
 </body>
 </html>

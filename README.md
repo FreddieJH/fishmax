@@ -17,8 +17,7 @@ Bayesian Framework.
 
 ## Installation
 
-You can install the development version of fishmax from
-[GitHub](https://github.com/) with:
+You can install the development version of fishmax with:
 
 ``` r
 # install.packages("pak")
@@ -27,30 +26,45 @@ pak::pak("FreddieJH/fishmax")
 
 ## Example
 
-This is a basic example which shows you how to fit an EVT model to a set
-of maxima values:
+This is a basic example which shows you how to fit an EVT and EFS model
+to a set of maxima values:
 
 ``` r
 library(fishmax)
 
 # five example sample maxima (e.g., max from five fishing competitions)
 length_maxima <- c(40, 41, 35, 42, 31) #cm
+```
 
+### Model fitting
+
+First step is to fit the two models.
+
+``` r
+# Extreme Value Theory (EVT) and Exact Finite Sample (EFS) models
 evt_fit <- fit_mod(length_maxima, model_type = "evt")
 efs_fit <- fit_mod(length_maxima, model_type = "efs")
 ```
 
-### Get $L_{nax}$ estimates
+### Get $L_{max}$ estimates
+
+You can then obtain the estimates of $L_{max}$ from the models, chosing
+the credible interval of choice (here we use 80% credible intervals),
+and the 20-sample maxima. Here, we set $k$ to 20 (default value), to
+estimate $L_{max}$ if we had 20 samples, this is an arbitrary number but
+we recommend this value for consistency. Note that this is **not** the
+number of sample maxima used to fit the model.
 
 ``` r
-# estimate LMAX based on 20 samples, showing 80% credible intervals
+# estimate the 20-sample LMAX , showing 80% credible intervals
 est_max(evt_fit, ci = 0.8, k = 20)
 est_max(efs_fit, ci = 0.8, k = 20)
 ```
 
-### Visualise the $L_{nax}$ estimates
+### Visualise the $L_{max}$ estimates
 
 ``` r
+# visualise the fit of both the models
 plot_model_comparison(
   evt_fit = evt_fit,
   efs_fit = efs_fit,
@@ -61,6 +75,7 @@ plot_model_comparison(
 ### Check the model fit with traceplots
 
 ``` r
+# check to make sure there is convergence of the model parameters
 traceplot(evt_fit)
 traceplot(efs_fit)
 ```

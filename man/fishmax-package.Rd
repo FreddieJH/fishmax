@@ -14,7 +14,7 @@ Bayesian methods via Stan.
 \section{Main functions}{
 
 \describe{
-\item{\code{\link{fit_mod}}}{Fit EVT or EFS models to data}
+\item{\code{\link{fit_evt_model}}}{Fit EVT or EFS models to data}
 \item{\code{\link{get_posterior}}}{Extract posterior samples}
 \item{\code{\link{est_max}}}{Estimate maximum size for given return period}
 \item{\code{\link{get_pdf}}}{Compute probability density function}

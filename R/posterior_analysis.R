@@ -16,17 +16,17 @@ get_posterior <- function(fit) {
 
 #' Estimate maximum size
 #'
-#' Estimates maximum size given return period k
+#' Estimates maximum size given 'return period' k
 #'
 #' @param fit Fitted model object
 #' @param ci Credible interval width (default: 0.8)
-#' @param k Return period
+#' @param k The k-sample LMAX. By default this is set to 20, for ease of comparison between studies and species. Note that this is not the number of sample maxima used to fit the model. (default: 20)
 #'
 #' @return Vector of c(estimate, lower CI, upper CI)
 #' @export
 #' @importFrom dplyr mutate summarise
 #' @importFrom purrr pmap_dbl
-est_max <- function(fit, ci = 0.8, k) {
+est_max <- function(fit, ci = 0.8, k = 20) {
   posterior_samples <- get_posterior(fit)
   is_evt <- sum(c("loc", "scale", "shape") %in% colnames(posterior_samples)) ==
     3

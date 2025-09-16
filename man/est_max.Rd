@@ -4,18 +4,18 @@
 \alias{est_max}
 \title{Estimate maximum size}
 \usage{
-est_max(fit, ci = 0.8, k)
+est_max(fit, ci = 0.8, k = 20)
 }
 \arguments{
 \item{fit}{Fitted model object}
 
 \item{ci}{Credible interval width (default: 0.8)}
 
-\item{k}{Return period}
+\item{k}{The k-sample LMAX. By default this is set to 20, for ease of comparison between studies and species. Note that this is not the number of sample maxima used to fit the model. (default: 20)}
 }
 \value{
 Vector of c(estimate, lower CI, upper CI)
 }
 \description{
-Estimates maximum size given return period k
+Estimates maximum size given 'return period' k
 }
