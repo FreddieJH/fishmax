@@ -4,7 +4,6 @@ output: github_document
 
 ```{r, include = FALSE, message=FALSE }
 knitr::opts_chunk$set(
-  eval = FALSE,
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-",
@@ -34,10 +33,30 @@ This is a basic example which shows you how to fit an EVT model to a set of maxi
 
 ```{r example}
 library(fishmax)
-## basic example code
+
+# five example sample maxima (e.g., max from five fishing competitions)
 length_maxima <- c(40, 41, 35, 42, 31) #cm
 
-model_fit <- fit_mod(length_maxima, model_type = "evt")
+evt_fit <- fit_mod(length_maxima, model_type = "evt")
+efs_fit <- fit_mod(length_maxima, model_type = "efs")
 
 ```
 
+### Get $L_{nax}$ estimates
+
+```{r}
+est_max(evt_fit)
+est_max(efs_fit)
+```
+
+### Visualise the $L_{nax}$ estimates
+
+```{r}
+plot_model_comparison(evt_fit = evt_fit, efs_fit = efs_fit)
+```
+
+### Check the model fit with traceplots
+
+```{r include = TRUE}
+traceplot(evt_fit)
+```
