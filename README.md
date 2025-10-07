@@ -1,9 +1,10 @@
 
 # fishmax
 
-<!-- badges: start -->
-
-<!-- badges: end -->
+[![R build
+status](https://github.com/FreddieJH/fishmax/workflows/R-CMD-check/badge.svg)](https://github.com/FreddieJH/fishmax/actions)
+[![License:
+MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://cran.r-project.org/web/licenses/MIT)
 
 The goal of fishmax provides a robust method to estimate the maximum
 body length of fishes, with uncertanty. The packages uses two
