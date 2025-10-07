@@ -16,6 +16,7 @@ Imports:
     purrr,
     tidyr,
     posterior,
+    checkmate,
     truncnorm,
     evd,
     scales,
@@ -26,6 +27,7 @@ Imports:
     knitr
 Suggests:
     testthat (>= 3.0.0),
+    cmdstanr (>= 0.6.0),
     rmarkdown,
     magick,
     grid
