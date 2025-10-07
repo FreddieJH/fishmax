@@ -1,6 +1,6 @@
-#' Create trace plot for MCMC diagnostics
+#' Create traceplot for MCMC diagnostics
 #'
-#' Creates trace plots for model parameters to assess MCMC convergence
+#' Creates traceplots for model parameters to assess MCMC convergence
 #'
 #' @param fit Fitted model object
 #'
@@ -8,7 +8,7 @@
 #' @export
 #' @importFrom ggplot2 ggplot aes geom_path facet_wrap theme_classic theme
 #' @importFrom tidyr pivot_longer
-traceplot <- function(fit) {
+plot_traceplot <- function(fit) {
   posterior_samples <- get_posterior(fit)
   n_params <- ncol(posterior_samples) - 3 # chain, iteration and draw cols
 

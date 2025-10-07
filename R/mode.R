@@ -11,10 +11,9 @@
 #' @return Numeric value representing the x-coordinate where f(x) is maximised
 #'   within the specified interval.
 #'
-#' @details
-#' Uses R's built-in `optimise()` function to find the maximum of f over the
-#' interval [lwr, upr]. The search interval should be chosen to contain the
-#' mode of the distribution. For distributions with support outside [0, 1000],
+#' @details Uses R's built-in `optimise()` function to find the maximum of f over the
+#' interval 'lwr' to 'upr'. The search interval should be chosen to contain the
+#' mode of the distribution. For distributions with support outside 0 to 1000,
 #' adjust lwr and upr accordingly.
 #'
 #' @examples

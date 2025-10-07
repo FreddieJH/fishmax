@@ -14,11 +14,12 @@ Bayesian methods via Stan.
 \section{Main functions}{
 
 \describe{
-\item{\code{\link{fit_evt_model}}}{Fit EVT or EFS models to data}
+\item{\code{\link{fit_max_model}}}{Fit EVT or EFS models to data}
 \item{\code{\link{get_posterior}}}{Extract posterior samples}
-\item{\code{\link{est_max}}}{Estimate maximum size for given return period}
+\item{\code{\link{get_max}}}{Estimate maximum size for given return period}
 \item{\code{\link{get_pdf}}}{Compute probability density function}
-\item{\code{\link{plot_model_comparison}}}{Create model comparison plots}
+\item{\code{\link{plot_pdf}}}{Visually compare the PDFs of the fitted models}
+\item{\code{\link{plot_traceplot}}}{Visualise the fitting process of the models}
 }
 }
 

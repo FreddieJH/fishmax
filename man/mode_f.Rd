@@ -24,8 +24,8 @@ function using optimisation over a specified interval.
 }
 \details{
 Uses R's built-in \code{optimise()} function to find the maximum of f over the
-interval \link{lwr, upr}. The search interval should be chosen to contain the
-mode of the distribution. For distributions with support outside \link{0, 1000},
+interval 'lwr' to 'upr'. The search interval should be chosen to contain the
+mode of the distribution. For distributions with support outside 0 to 1000,
 adjust lwr and upr accordingly.
 }
 \examples{
