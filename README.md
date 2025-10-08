@@ -46,11 +46,11 @@ First step is to fit the maxima models.
 
 ``` r
 # By default, when fitting to a vector of maxima (only maximum known per sample), it will fit the EVT (GEV), EVT (Gumbel), and EFS models.
-fit_single <- fit_max_mod(maxima_vector)
+fit_single <- fit_max_model(maxima_vector)
 
 # By default, when fitting to a list of maxima (largest m known per sample), it will fit all models: EVT (GEV), EVT (Gumbel), EFS, and EFSMM models.
 # Note that when fiting the models that can only take the maxima (EVT-GEV, EVT-Gumbel, and EFS), the models will only use the maximum frpm each sample
-fit_mult <- fit_max_mod(maxima_list)
+fit_mult <- fit_max_model(maxima_list)
 ```
 
 ### Get $L_{max}$ estimates
@@ -64,8 +64,7 @@ number of sample maxima used to fit the model.
 
 ``` r
 # estimate the 20-sample LMAX , showing 80% credible intervals
-get_max(fit = evt_fit, ci = 0.8, k = 20)
-get_max(fit = efs_fit, ci = 0.8, k = 20)
+get_max(fit = fit_single, ci = 0.8, k = 20)
 ```
 
 ### Visualise the $L_{max}$ estimates
