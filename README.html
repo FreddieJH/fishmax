@@ -669,7 +669,7 @@ of a vector, or a list of vectors (multiple maxima per sample)/</p>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a></span>
 <span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co"># By default, when fitting to a list of maxima (largest m known per sample), it will fit all models: EVT (GEV), EVT (Gumbel), EFS, and EFSMM models.</span></span>
 <span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co"># Note that when fiting the models that can only take the maxima (EVT-GEV, EVT-Gumbel, and EFS), the models will only use the maximum frpm each sample</span></span>
-<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>fit_mult <span class="ot">&lt;-</span> <span class="fu">fit_mod</span>(maxima_list)</span></code></pre></div>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>fit_mult <span class="ot">&lt;-</span> <span class="fu">fit_max_mod</span>(maxima_list)</span></code></pre></div>
 <h3 id="get-l_max-estimates">Get <span class="math inline">\(L_{max}\)</span> estimates</h3>
 <p>You can then obtain the estimates of <span class="math inline">\(L_{max}\)</span> from the models, chosing the
 credible interval of choice (here we use 80% credible intervals), and
