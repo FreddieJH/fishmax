@@ -13,8 +13,9 @@ knitr::opts_chunk$set(
 
 # fishmax
 
-`r badger::badge_github_version("FreddieJH/fishmax", color = "green")`
-`r badger::badge_license("MIT")`
+  <!-- badges: start -->
+  [![R-CMD-check](https://github.com/FreddieJH/fishEVA/actions/workflows/R-CMD-check.yaml/badge.svghttps://github.com/FreddieJH/fishEVA/actions/workflows/R-CMD-check.yaml/badge.svghttps://github.com/FreddieJH/fishEVA/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/FreddieJH/fishEVA/actions/workflows/R-CMD-check.yaml)
+  <!-- badges: end -->
 
 The goal of fishmax provides a robust method to estimate the maximum body length of fishes, with uncertanty. The packages uses two approaches, the first is from Extreme Value Theory (EVT), which shows that the maxima of a set of samples follows a specific distribution - the Generalised Extreme Value (GEV) distribution. The second approach uses knowledge on the underlying body size distribution to estimate the likely parameters of the underlying distribution that would give rise to the observed sample maxima. The two approaches are implemented using a Bayesian Framework. 
 

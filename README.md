@@ -1,9 +1,9 @@
 
 # fishmax
 
-[![](https://img.shields.io/badge/devel%20version-0.0.0.9000-green.svg)](https://github.com/FreddieJH/fishmax)
-[![License:
-MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://cran.r-project.org/web/licenses/MIT)
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/FreddieJH/fishEVA/actions/workflows/R-CMD-check.yaml/badge.svghttps://github.com/FreddieJH/fishEVA/actions/workflows/R-CMD-check.yaml/badge.svghttps://github.com/FreddieJH/fishEVA/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/FreddieJH/fishEVA/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
 
 The goal of fishmax provides a robust method to estimate the maximum
 body length of fishes, with uncertanty. The packages uses two
