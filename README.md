@@ -1,10 +1,6 @@
 
 # fishmax
 
-<!-- badges: start -->
-[![R-CMD-check](https://github.com/FreddieJH/fishEVA/actions/workflows/R-CMD-check.yaml/badge.svghttps://github.com/FreddieJH/fishEVA/actions/workflows/R-CMD-check.yaml/badge.svghttps://github.com/FreddieJH/fishEVA/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/FreddieJH/fishEVA/actions/workflows/R-CMD-check.yaml)
-<!-- badges: end -->
-
 The goal of fishmax provides a robust method to estimate the maximum
 body length of fishes, with uncertanty. The packages uses two
 approaches, the first is from Extreme Value Theory (EVT), which shows
