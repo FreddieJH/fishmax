@@ -17,10 +17,9 @@ Bayesian Framework.
 
 ## Installation
 
-The package fishmax requires `cmdstan` to be installed in order to fit
-the bayesian models. You can install cmdstan directly from R using
-`cmdstanr::install_cmdstan()` (see code chunk below). You can then
-install the fishmax package.
+Installation of fishmax also requires `cmdstan` to be installed. You can
+install cmdstan directly from R using `cmdstanr::install_cmdstan()`. To
+install cmdstanr, cmdstan and fishmax:
 
 ``` r
 # install.packages("pak")

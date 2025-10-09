@@ -648,10 +648,10 @@ likely parameters of the underlying distribution that would give rise to
 the observed sample maxima. The two approaches are implemented using a
 Bayesian Framework.</p>
 <h2 id="installation">Installation</h2>
-<p>The package fishmax requires <code>cmdstan</code> to be installed in
-order to fit the bayesian models. You can install cmdstan directly from
-R using <code>cmdstanr::install_cmdstan()</code> (see code chunk below).
-You can then install the fishmax package.</p>
+<p>Installation of fishmax also requires <code>cmdstan</code> to be
+installed. You can install cmdstan directly from R using
+<code>cmdstanr::install_cmdstan()</code>. To install cmdstanr, cmdstan
+and fishmax:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># install.packages(&quot;pak&quot;)</span></span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>pak<span class="sc">::</span><span class="fu">pak</span>(<span class="st">&quot;stan-dev/cmdstanr&quot;</span>) <span class="co"># installs cmdstanr R package</span></span>
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>cmdstanr<span class="sc">::</span><span class="fu">install_cmdstan</span>() <span class="co"># installs cmdstan</span></span>
