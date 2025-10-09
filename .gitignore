@@ -1,5 +1,4 @@
 .Rproj.user
-src/stan/**
-!src/stan/**/*.*
-src/stan/**/*.exe
-src/stan/**/*.EXE
+
+inst/stan/*.exe
+inst/stan/*.EXE
