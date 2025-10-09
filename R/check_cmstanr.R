@@ -6,7 +6,7 @@ check_cmdstan <- function() {
     )
   }
 
-  if (!cmdstanr::cmdstan_version(error_on_NA = FALSE)) {
+  if (is.null(cmdstanr::cmdstan_version(error_on_NA = FALSE))) {
     stop("CmdStan is not installed. Install with: cmdstanr::install_cmdstan()")
   }
 }
