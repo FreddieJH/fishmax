@@ -23,16 +23,10 @@ The goal of fishmax provides a robust method to estimate the maximum body length
 The package fishmax requires `cmdstan` to be installed in order to fit the bayesian models. You can install cmdstan directly from R using `cmdstanr::install_cmdstan()` (see code chunk below). You can then install the fishmax package.
 
 ```{r install}
-# installing cmdstanr and cmdstan
-install.packages(
-  'cmdstanr',
-  repos = c('https://stan-dev.r-universe.dev', getOption('repos'))
-)
-cmdstanr::install_cmdstan()
-
-# installation of fishmax package
 # install.packages("pak")
-pak::pak("FreddieJH/fishmax")
+pak::pak("stan-dev/cmdstanr") # installs cmdstanr R package
+cmdstanr::install_cmdstan() # installs cmdstan
+pak::pak("FreddieJH/fishmax") # installs fishmax
 ```
 
 ## Example

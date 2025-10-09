@@ -23,16 +23,10 @@ the bayesian models. You can install cmdstan directly from R using
 install the fishmax package.
 
 ``` r
-# installing cmdstanr and cmdstan
-install.packages(
-  'cmdstanr',
-  repos = c('https://stan-dev.r-universe.dev', getOption('repos'))
-)
-cmdstanr::install_cmdstan()
-
-# installation of fishmax package
 # install.packages("pak")
-pak::pak("FreddieJH/fishmax")
+pak::pak("stan-dev/cmdstanr") # installs cmdstanr R package
+cmdstanr::install_cmdstan() # installs cmdstan
+pak::pak("FreddieJH/fishmax") # installs fishmax
 ```
 
 ## Example
