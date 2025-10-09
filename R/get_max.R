@@ -73,6 +73,9 @@ get_max <- function(fit, ci = 0.8, k = 20) {
         )
     })
   names(output_list) <- names(fit_slim)
-  output_list[["maxima"]] <- fit[["maxima"]]
-  return(output_list)
+  # output_list[["maxima"]] <- fit[["maxima"]]
+  return(
+    output_list |>
+      dplyr::bind_rows(.id = "model")
+  )
 }

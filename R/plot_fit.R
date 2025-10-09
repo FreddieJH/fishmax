@@ -68,7 +68,6 @@ plot_pdf <- function(
 
   p_partb <-
     get_max(fit_slim, k = k) |>
-    dplyr::bind_rows(.id = "model") |>
     dplyr::mutate(
       model = dplyr::case_match(
         model,
