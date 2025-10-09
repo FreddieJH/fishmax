@@ -48,6 +48,7 @@ fit_max_model <- function(
   adapt_delta = 0.999,
   max_treedepth = 12
 ) {
+  check_cmdstan()
   # Input validation
   checkmate::assert(
     checkmate::test_numeric(
