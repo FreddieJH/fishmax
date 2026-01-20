@@ -1,6 +1,6 @@
 #' Validate cmdstanr fit object
 #'
-#' Internal function to validate fit input
+#' Internal function to validate CMDstanR fit input
 #'
 #' @param fit Named list of CmdStanMCMC objects
 #' @noRd

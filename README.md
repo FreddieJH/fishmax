@@ -64,7 +64,7 @@ number of sample maxima used to fit the model.
 
 ``` r
 # estimate the 20-sample LMAX , showing 80% credible intervals
-get_max(fit = fit_single, ci = 0.8, k = 20)
+get_lmax(fit = fit_single, ci = 0.8, k = 20)
 ```
 
 ### Visualise the $L_{max}$ estimates

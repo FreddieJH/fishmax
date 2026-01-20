@@ -13,7 +13,7 @@
 #' @importFrom ggplot2 ggplot aes geom_ribbon geom_line geom_rug scale_x_continuous labs theme_classic
 #' @importFrom scales label_number
 #' @importFrom dplyr tibble
-plot_pdf <- function(
+plot_fit <- function(
   fit,
   xmin = 0,
   xmax = 300,
@@ -63,11 +63,20 @@ plot_pdf <- function(
     ) +
     ggplot2::scale_color_manual(values = col_pallette) +
     ggplot2::scale_fill_manual(values = col_pallette) +
-    ggplot2::labs(x = "Body size", y = "Probability density") +
-    ggplot2::theme_classic(20)
+    ggplot2::labs(
+      x = "Body size",
+      y = "Probability density",
+      fill = NULL,
+      col = NULL
+    ) +
+    ggplot2::theme_classic(20) +
+    ggplot2::theme(
+      legend.position = c(0.9, 0.9),
+      legend.justification = c(1, 1)
+    )
 
   p_partb <-
-    get_max(fit_slim, k = k) |>
+    get_lmax(fit_slim, k = k) |>
     dplyr::mutate(
       model = dplyr::case_match(
         model,
@@ -80,7 +89,10 @@ plot_pdf <- function(
     ggplot2::ggplot() +
     ggplot2::aes(x = max_fit, y = model, col = model) +
     ggplot2::geom_point(size = 5) +
-    ggplot2::geom_errorbarh(aes(xmin = max_lwr, xmax = max_upr), height = 0) +
+    ggplot2::geom_errorbarh(
+      ggplot2::aes(xmin = max_lwr, xmax = max_upr),
+      height = 0
+    ) +
     ggplot2::labs(y = NULL, x = expression(paste("Estimated ", L[max]))) +
     ggplot2::scale_x_continuous(
       labels = scales::label_number(suffix = "cm"),

@@ -61,14 +61,7 @@ You can then obtain the estimates of $L_{max}$ from the models, chosing the cred
 
 ```{r}
 # estimate the 20-sample LMAX , showing 80% credible intervals
-get_max(fit = fit_single, ci = 0.8, k = 20)
-```
-
-### Visualise the $L_{max}$ estimates
-
-```{r visualisation}
-# visualise the PDF of the maximum for each sample
-plot_pdf(fit_single)
+get_lmax(fit = fit_single, ci = 0.8, k = 20)
 ```
 
 ### Check the model fit with traceplots
@@ -76,4 +69,16 @@ plot_pdf(fit_single)
 ```{r traceplot}
 # check to make sure there is convergence of the model parameters
 plot_traceplot(fit_single)
+
+# or if you only want to look at the EFS model
+plot_traceplot(fit_single['efs'])
+```
+
+
+
+### Visualise the $L_{max}$ estimates
+
+```{r visualisation}
+# visualise the PDF of the maximum for each sample
+plot_fit(fit_single)
 ```
