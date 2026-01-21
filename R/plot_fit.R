@@ -89,7 +89,8 @@ plot_fit <- function(
     ggplot2::ggplot() +
     ggplot2::aes(x = max_fit, y = model, col = model) +
     ggplot2::geom_point(size = 5) +
-    ggplot2::geom_errorbarh(
+    ggplot2::geom_errorbar(
+      orientation = "x",
       ggplot2::aes(xmin = max_lwr, xmax = max_upr),
       height = 0
     ) +

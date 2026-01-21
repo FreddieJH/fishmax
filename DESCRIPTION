@@ -24,6 +24,8 @@ Imports:
     cmdstanr,
     methods,
     evd
+Remotes:
+    stan-dev/cmdstanr
 Suggests:
     testthat (>= 3.0.0),
     cmdstanr (>= 0.6.0)
