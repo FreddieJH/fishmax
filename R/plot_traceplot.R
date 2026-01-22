@@ -7,23 +7,33 @@
 #' @return ggplot object
 #' @export
 #' @importFrom ggplot2 ggplot aes geom_path facet_wrap theme_classic theme
-#' @importFrom tidyr pivot_longer
 plot_traceplot <- function(fit) {
   posterior_samples <- get_posterior(fit)
-
-  purrr::map(
+  plots <- lapply(
     names(posterior_samples)[names(posterior_samples) != "maxima"],
     function(model_name) {
-      n_params <- ncol(posterior_samples[[model_name]]) - 3
+      ps <- posterior_samples[[model_name]]
 
-      posterior_samples[[model_name]] |>
-        tidyr::pivot_longer(cols = -c(.chain, .iteration, .draw)) |>
-        ggplot2::ggplot(ggplot2::aes(
-          .iteration,
-          value,
-          colour = as.factor(.chain),
+      n_params <- ncol(ps) - 3
+
+      long <- reshape(
+        ps,
+        varying = setdiff(names(ps), c(".chain", ".iteration", ".draw")),
+        v.names = "value",
+        timevar = "name",
+        times = setdiff(names(ps), c(".chain", ".iteration", ".draw")),
+        direction = "long"
+      )
+
+      ggplot2::ggplot(
+        long,
+        ggplot2::aes(
+          x = .iteration,
+          y = value,
+          colour = factor(.chain),
           group = .chain
-        )) +
+        )
+      ) +
         ggplot2::geom_path(alpha = 0.4) +
         ggplot2::facet_wrap(
           ~name,

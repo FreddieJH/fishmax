@@ -21,10 +21,13 @@ The goal of fishmax provides a robust method to estimate the maximum body length
 Installation of fishmax also requires `cmdstan` to be installed. You can install cmdstan directly from R using `cmdstanr::install_cmdstan()`. To install cmdstanr, cmdstan and fishmax:
 
 ```{r install}
-# install.packages("pak")
-pak::pak("stan-dev/cmdstanr") # installs cmdstanr R package
-cmdstanr::install_cmdstan() # installs cmdstan
-pak::pak("FreddieJH/fishmax") # installs fishmax
+install.packages("remotes")
+install.packages(
+  "cmdstanr",
+  repos = c('https://stan-dev.r-universe.dev', getOption("repos"))
+) # installs cmdstanr R package
+cmdstanr::install_cmdstan() # installs cmdstan (C++ toolchain)
+remotes::install_github("FreddieJH/fishmax") # installs fishmax
 ```
 
 ## Example

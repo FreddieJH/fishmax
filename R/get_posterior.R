@@ -13,23 +13,26 @@ get_posterior <- function(fit) {
   fit_slim <- fit[names(fit) != "maxima"]
   validate_fit(fit_slim)
 
-  # Extract posteriors for all models
-  output_list <-
-    purrr::map(fit_slim, \(model_fit) {
-      tryCatch(
-        {
-          posterior::as_draws_df(model_fit) |>
-            dplyr::as_tibble()
-        },
-        error = function(e) {
-          stop(
-            sprintf("Failed to extract posterior samples: %s", e$message),
-            call. = FALSE
-          )
-        }
-      )
-    })
+  # Extract posterior samples for all models
+  output_list <- lapply(fit_slim, function(model_fit) {
+    tryCatch(
+      {
+        as.data.frame(posterior::as_draws_df(model_fit))
+      },
+      error = function(e) {
+        stop(
+          sprintf("Failed to extract posterior samples: %s", e$message),
+          call. = FALSE
+        )
+      }
+    )
+  })
+
+  # Preserve names
   names(output_list) <- names(fit_slim)
+
+  # Add back the "maxima" element
   output_list[["maxima"]] <- fit[["maxima"]]
+
   return(output_list)
 }

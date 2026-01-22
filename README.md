@@ -18,10 +18,13 @@ install cmdstan directly from R using `cmdstanr::install_cmdstan()`. To
 install cmdstanr, cmdstan and fishmax:
 
 ``` r
-# install.packages("pak")
-pak::pak("stan-dev/cmdstanr") # installs cmdstanr R package
-cmdstanr::install_cmdstan() # installs cmdstan
-pak::pak("FreddieJH/fishmax") # installs fishmax
+install.packages("remotes")
+install.packages(
+  "cmdstanr",
+  repos = c('https://stan-dev.r-universe.dev', getOption("repos"))
+) # installs cmdstanr R package
+cmdstanr::install_cmdstan() # installs cmdstan (C++ toolchain)
+remotes::install_github("FreddieJH/fishmax") # installs fishmax
 ```
 
 ## Example
@@ -67,16 +70,19 @@ number of sample maxima used to fit the model.
 get_lmax(fit = fit_single, ci = 0.8, k = 20)
 ```
 
-### Visualise the $L_{max}$ estimates
-
-``` r
-# visualise the PDF of the maximum for each sample
-plot_pdf(fit_single)
-```
-
 ### Check the model fit with traceplots
 
 ``` r
 # check to make sure there is convergence of the model parameters
 plot_traceplot(fit_single)
+
+# or if you only want to look at the EFS model
+plot_traceplot(fit_single['efs'])
+```
+
+### Visualise the $L_{max}$ estimates
+
+``` r
+# visualise the PDF of the maximum for each sample
+plot_fit(fit_single)
 ```

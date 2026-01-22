@@ -10,11 +10,11 @@
 \usage{
 dtnorm(x, mean, sd)
 
-ptnorm(q, mean, sd)
+ptnorm(q, mean = 0, sd = 1)
 
 qtnorm(p, mean, sd)
 
-rtnorm(n, mean, sd)
+rtnorm(n, mean = 0, sd = 1)
 }
 \arguments{
 \item{x, q}{Vector of quantiles}

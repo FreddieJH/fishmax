@@ -650,10 +650,13 @@ Bayesian Framework.</p>
 installed. You can install cmdstan directly from R using
 <code>cmdstanr::install_cmdstan()</code>. To install cmdstanr, cmdstan
 and fishmax:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># install.packages(&quot;pak&quot;)</span></span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>pak<span class="sc">::</span><span class="fu">pak</span>(<span class="st">&quot;stan-dev/cmdstanr&quot;</span>) <span class="co"># installs cmdstanr R package</span></span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>cmdstanr<span class="sc">::</span><span class="fu">install_cmdstan</span>() <span class="co"># installs cmdstan</span></span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>pak<span class="sc">::</span><span class="fu">pak</span>(<span class="st">&quot;FreddieJH/fishmax&quot;</span>) <span class="co"># installs fishmax</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;remotes&quot;</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">install.packages</span>(</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>  <span class="st">&quot;cmdstanr&quot;</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>  <span class="at">repos =</span> <span class="fu">c</span>(<span class="st">&#39;https://stan-dev.r-universe.dev&#39;</span>, <span class="fu">getOption</span>(<span class="st">&quot;repos&quot;</span>))</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>) <span class="co"># installs cmdstanr R package</span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>cmdstanr<span class="sc">::</span><span class="fu">install_cmdstan</span>() <span class="co"># installs cmdstan (C++ toolchain)</span></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;FreddieJH/fishmax&quot;</span>) <span class="co"># installs fishmax</span></span></code></pre></div>
 <h2 id="example">Example</h2>
 <p>This is a basic example which shows you how to fit an EVT and EFS
 model to a set of maxima values. Length maxima can either be in the from
@@ -682,14 +685,17 @@ is an arbitrary number but we recommend this value for consistency. Note
 that this is <strong>not</strong> the number of sample maxima used to
 fit the model.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># estimate the 20-sample LMAX , showing 80% credible intervals</span></span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="fu">get_max</span>(<span class="at">fit =</span> fit_single, <span class="at">ci =</span> <span class="fl">0.8</span>, <span class="at">k =</span> <span class="dv">20</span>)</span></code></pre></div>
-<h3 id="visualise-the-l_max-estimates">Visualise the <span class="math inline">\(L_{max}\)</span> estimates</h3>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># visualise the PDF of the maximum for each sample</span></span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="fu">plot_pdf</span>(fit_single)</span></code></pre></div>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="fu">get_lmax</span>(<span class="at">fit =</span> fit_single, <span class="at">ci =</span> <span class="fl">0.8</span>, <span class="at">k =</span> <span class="dv">20</span>)</span></code></pre></div>
 <h3 id="check-the-model-fit-with-traceplots">Check the model fit with
 traceplots</h3>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co"># check to make sure there is convergence of the model parameters</span></span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="fu">plot_traceplot</span>(fit_single)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># check to make sure there is convergence of the model parameters</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="fu">plot_traceplot</span>(fit_single)</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co"># or if you only want to look at the EFS model</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="fu">plot_traceplot</span>(fit_single[<span class="st">&#39;efs&#39;</span>])</span></code></pre></div>
+<h3 id="visualise-the-l_max-estimates">Visualise the <span class="math inline">\(L_{max}\)</span> estimates</h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co"># visualise the PDF of the maximum for each sample</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="fu">plot_fit</span>(fit_single)</span></code></pre></div>
 
 </body>
 </html>

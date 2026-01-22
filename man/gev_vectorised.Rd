@@ -7,11 +7,11 @@
 \alias{qgev_v}
 \title{Vectorised GEV distribution functions}
 \usage{
-dgev_v(x, loc = 0, scale = 1, shape = 0, log = FALSE)
+dgev_v(x, loc = 0, scale = 1, shape = 0, ...)
 
-pgev_v(q, loc = 0, scale = 1, shape = 0, lower.tail = TRUE)
+pgev_v(q, loc = 0, scale = 1, shape = 0, ...)
 
-qgev_v(p, loc = 0, scale = 1, shape = 0, lower.tail = TRUE)
+qgev_v(p, loc = 0, scale = 1, shape = 0, ...)
 }
 \arguments{
 \item{x, q}{Vector of quantiles}

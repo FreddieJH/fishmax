@@ -12,19 +12,19 @@
 #'
 #' @examples
 #' # Standard normal distribution
-#' invG(n = 1000, cdf = pnorm, p = 0.95)
+#' max_cdf_inv(n = 1000, cdf = pnorm, p = 0.95)
 #'
 #' # Normal with mean = 5, sd = 2
-#' invG(n = 1000, cdf = \(x) pnorm(x, 5, 2), p = 0.95)
+#' max_cdf_inv(n = 1000, cdf = \(x) pnorm(x, 5, 2), p = 0.95)
 #'
 #' # Exponential with rate = 0.5
-#' invG(n = 1000, cdf = \(x) pexp(x, 0.5), p = 0.95)
+#' max_cdf_inv(n = 1000, cdf = \(x) pexp(x, 0.5), p = 0.95)
 #'
 #' # Beta distribution
-#' invG(n = 1000, cdf = \(x) pbeta(x, 2, 5), p = 0.95)
-invG <- function(n, cdf, p = 0.95, lwr = 0, upr = 1000) {
+#' max_cdf_inv(n = 1000, cdf = \(x) pbeta(x, 2, 5), p = 0.95)
+max_cdf_inv <- function(n, cdf, p = 0.95, lwr = 0, upr = 1000) {
   # Check if root exists in initial interval
-  f <- function(x) G(x, n, cdf) - p
+  f <- function(x) max_cdf(x, n, cdf) - p
 
   f_lwr <- f(lwr)
   f_upr <- f(upr)

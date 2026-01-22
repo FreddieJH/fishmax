@@ -36,58 +36,72 @@ get_pdf <- function(fit, xmin = 0, xmax = 300, xstep = 1, ci = 0.8, k = 20) {
 #' Compute PDF for a single fitted model
 #' @noRd
 compute_pdf_single <- function(posterior_samples, sizes, ci, k) {
-  col_names <- colnames(posterior_samples)
-  is_evt <- all(c("loc", "scale", "shape") %in% col_names)
-  is_evtg <- all(c("loc", "scale") %in% col_names) && !("shape" %in% col_names)
+  cn <- colnames(posterior_samples)
 
-  # Compute PDF for each size value
-  purrr::map_dfr(
-    sizes,
-    \(x) {
-      pdf_samples <- if (is_evt) {
-        dgev_v(
-          x = x,
-          loc = posterior_samples$loc,
-          scale = posterior_samples$scale,
-          shape = posterior_samples$shape
-        )
-      } else if (is_evtg) {
-        dgumbel_v(
-          x = x,
-          loc = posterior_samples$loc,
-          scale = posterior_samples$scale
-        )
-      } else {
-        # EFS/EFSMM models
-        vapply(
-          seq_len(nrow(posterior_samples)),
-          \(i) {
-            cdf <- \(y) {
-              ptnorm(
-                q = y,
-                mean = posterior_samples$mu[i],
-                sd = posterior_samples$sigma[i]
-              )
-            }
-            pdf <- \(y) {
-              dtnorm(
-                x = y,
-                mean = posterior_samples$mu[i],
-                sd = posterior_samples$sigma[i]
-              )
-            }
-            g(x = x, n = posterior_samples$lambda[i] * k, cdf = cdf, pdf = pdf)
-          },
-          numeric(1)
-        )
-      }
+  model <- if (all(c("loc", "scale", "shape") %in% cn)) {
+    "evt"
+  } else if (all(c("loc", "scale") %in% cn)) {
+    "gumbel"
+  } else {
+    "tnorm"
+  }
 
-      tibble::tibble(
-        size = x,
-        pdf_fit = stats::quantile(pdf_samples, 0.5),
-        pdf_lwr = stats::quantile(pdf_samples, (1 - ci) / 2),
-        pdf_upr = stats::quantile(pdf_samples, 1 - ((1 - ci) / 2))
+  rows <- lapply(sizes, function(x) {
+    pdf_samples <- switch(
+      model,
+
+      evt = dgev_v(
+        x = x,
+        loc = posterior_samples$loc,
+        scale = posterior_samples$scale,
+        shape = posterior_samples$shape
+      ),
+
+      gumbel = dgumbel_v(
+        x = x,
+        loc = posterior_samples$loc,
+        scale = posterior_samples$scale
+      ),
+
+      tnorm = vapply(
+        seq_len(nrow(posterior_samples)),
+        function(i) {
+          cdf <- function(y) {
+            ptnorm(
+              q = y,
+              mean = posterior_samples$mu[i],
+              sd = posterior_samples$sigma[i]
+            )
+          }
+
+          pdf <- function(y) {
+            dtnorm(
+              x = y,
+              mean = posterior_samples$mu[i],
+              sd = posterior_samples$sigma[i]
+            )
+          }
+
+          max_pdf(
+            x = x,
+            n = posterior_samples$lambda[i] * k,
+            cdf = cdf,
+            pdf = pdf
+          )
+        },
+        numeric(1)
       )
-    }
-  )
+    )
+
+    data.frame(
+      size = x,
+      pdf_fit = stats::quantile(pdf_samples, 0.5),
+      pdf_lwr = stats::quantile(pdf_samples, (1 - ci) / 2),
+      pdf_upr = stats::quantile(pdf_samples, 1 - ((1 - ci) / 2))
+    )
+  })
+
+  out <- do.call(rbind, rows)
+  # row.names(out) <- NULL
+  return(out)
 }

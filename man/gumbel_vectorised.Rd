@@ -7,11 +7,11 @@
 \alias{qgumbel_v}
 \title{Vectorised Gumbel distribution functions}
 \usage{
-dgumbel_v(x, loc = 0, scale = 1, log = FALSE)
+dgumbel_v(x, loc = 0, scale = 1, ...)
 
-pgumbel_v(q, loc = 0, scale = 1, lower.tail = TRUE)
+pgumbel_v(q, loc = 0, scale = 1, ...)
 
-qgumbel_v(p, loc = 0, scale = 1, lower.tail = TRUE)
+qgumbel_v(p, loc = 0, scale = 1, ...)
 }
 \arguments{
 \item{x, q}{Vector of quantiles}
