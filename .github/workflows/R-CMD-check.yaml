@@ -40,6 +40,13 @@ jobs:
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
 
+      - name: Set additional R repositories
+        run: |
+          echo 'options(repos = c(
+            stan = "https://mc-stan.org/r-packages/",
+            getOption("repos")
+          ))' >> ~/.Rprofile
+
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: any::rcmdcheck
