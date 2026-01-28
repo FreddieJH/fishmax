@@ -23,7 +23,7 @@ install.packages(
   "cmdstanr",
   repos = c('https://stan-dev.r-universe.dev', getOption("repos"))
 ) # installs cmdstanr R package
-cmdstanr::install_cmdstan() # installs cmdstan (C++ toolchain)
+cmdstanr::install_cmdstan() # installs cmdstan (C++ toolchain; note, may take several minutes)
 remotes::install_github("FreddieJH/fishmax") # installs fishmax
 ```
 
