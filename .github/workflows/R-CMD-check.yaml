@@ -39,10 +39,7 @@ jobs:
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
-
-      # Required for Stan on Windows
-      - uses: r-lib/actions/setup-rtools@v2
-        if: runner.os == 'Windows'
+          install-rtools: true   # ✅ Correct way to get RTools on Windows
 
       - name: Set additional R repositories
         run: |
@@ -59,7 +56,7 @@ jobs:
             repos = c("https://stan-dev.r-universe.dev", getOption("repos"))
           )'
 
-      # Cache CmdStan to avoid rebuilding every run
+      # Cache CmdStan
       - name: Cache CmdStan
         uses: actions/cache@v4
         with:
@@ -71,18 +68,17 @@ jobs:
         run: |
           Rscript -e 'cmdstanr::install_cmdstan(cores = parallel::detectCores())'
 
-      # Fail early with a clear message if CmdStan is missing
+      # Verify CmdStan early
       - name: Verify CmdStan
         run: |
           Rscript -e 'stopifnot(cmdstanr::cmdstan_version() != "")'
 
-      # Install remaining package dependencies
+      # Install remaining dependencies
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: any::rcmdcheck
           needs: check
 
-      # Run R CMD check
       - uses: r-lib/actions/check-r-package@v2
         with:
           upload-snapshots: true
