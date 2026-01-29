@@ -21,9 +21,9 @@ jobs:
         config:
           - {os: macos-latest,   r: 'release'}
           - {os: windows-latest, r: 'release'}
-          - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
-          - {os: ubuntu-latest,   r: 'release'}
-          - {os: ubuntu-latest,   r: 'oldrel-1'}
+          - {os: ubuntu-latest,  r: 'devel', http-user-agent: 'release'}
+          - {os: ubuntu-latest,  r: 'release'}
+          - {os: ubuntu-latest,  r: 'oldrel-1'}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -40,6 +40,10 @@ jobs:
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
 
+      # Required for Stan on Windows
+      - uses: r-lib/actions/setup-rtools@v2
+        if: runner.os == 'Windows'
+
       - name: Set additional R repositories
         run: |
           echo 'options(repos = c(
@@ -47,11 +51,38 @@ jobs:
             getOption("repos")
           ))' >> ~/.Rprofile
 
+      # Install cmdstanr exactly as instructed to users
+      - name: Install cmdstanr
+        run: |
+          Rscript -e 'install.packages(
+            "cmdstanr",
+            repos = c("https://stan-dev.r-universe.dev", getOption("repos"))
+          )'
+
+      # Cache CmdStan to avoid rebuilding every run
+      - name: Cache CmdStan
+        uses: actions/cache@v4
+        with:
+          path: ~/.cmdstan
+          key: cmdstan-${{ runner.os }}
+
+      # Install CmdStan (C++ toolchain)
+      - name: Install CmdStan
+        run: |
+          Rscript -e 'cmdstanr::install_cmdstan(cores = parallel::detectCores())'
+
+      # Fail early with a clear message if CmdStan is missing
+      - name: Verify CmdStan
+        run: |
+          Rscript -e 'stopifnot(cmdstanr::cmdstan_version() != "")'
+
+      # Install remaining package dependencies
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: any::rcmdcheck
           needs: check
 
+      # Run R CMD check
       - uses: r-lib/actions/check-r-package@v2
         with:
           upload-snapshots: true
