@@ -685,7 +685,7 @@ models are compiled the fitting proceedure will be much quicker.</p>
 <span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>fit_single <span class="ot">&lt;-</span> <span class="fu">fit_max_model</span>(maxima_vector)</span>
 <span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a></span>
 <span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co"># By default, when fitting to a list of maxima (largest m known per sample), it will fit all models: EVT (GEV), EVT (Gumbel), EFS, and EFSMM models.</span></span>
-<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co"># Note that when fiting the models that can only take the maxima (EVT-GEV, EVT-Gumbel, and EFS), the models will only use the maximum frpm each sample</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co"># Note that when fiting the models that can only take the maxima (EVT-GEV, EVT-Gumbel, and EFS), the models will only use the maximum from each sample</span></span>
 <span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>fit_mult <span class="ot">&lt;-</span> <span class="fu">fit_max_model</span>(maxima_list)</span></code></pre></div>
 <h3 id="get-l_max-estimates">Get <span class="math inline">\(L_{max}\)</span> estimates</h3>
 <p>You can then obtain the estimates of <span class="math inline">\(L_{max}\)</span> from the models, chosing the

@@ -68,7 +68,7 @@ models are compiled the fitting proceedure will be much quicker.
 fit_single <- fit_max_model(maxima_vector)
 
 # By default, when fitting to a list of maxima (largest m known per sample), it will fit all models: EVT (GEV), EVT (Gumbel), EFS, and EFSMM models.
-# Note that when fiting the models that can only take the maxima (EVT-GEV, EVT-Gumbel, and EFS), the models will only use the maximum frpm each sample
+# Note that when fiting the models that can only take the maxima (EVT-GEV, EVT-Gumbel, and EFS), the models will only use the maximum from each sample
 fit_mult <- fit_max_model(maxima_list)
 ```
 
