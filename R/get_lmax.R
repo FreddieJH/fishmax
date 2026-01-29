@@ -83,7 +83,16 @@ get_lmax <- function(fit, ci = 0.8, k = 20) {
         as.data.frame(t(output_list[[i]]))
       )
     })
-  )
+  ) |>
+    dplyr::mutate(
+      model = dplyr::case_match(
+        model,
+        "efs" ~ "EFS",
+        "evt" ~ "EVT (GEV)",
+        "evt_gumbel" ~ "EVT (Gumbel)",
+        "efsmm" ~ "EFSmm"
+      )
+    )
 
   return(out)
 }

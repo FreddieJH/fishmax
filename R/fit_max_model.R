@@ -46,7 +46,8 @@ fit_max_model <- function(
   iter_warmup = 2000,
   iter_sampling = 1000,
   adapt_delta = 0.999,
-  max_treedepth = 12
+  max_treedepth = 12,
+  refresh = 1000
 ) {
   check_cmdstan()
   # Input validation
@@ -140,7 +141,8 @@ fit_max_model <- function(
       iter_warmup = iter_warmup,
       iter_sampling = iter_sampling,
       adapt_delta = adapt_delta,
-      max_treedepth = max_treedepth
+      max_treedepth = max_treedepth,
+      refresh = refresh
     )
   })
 
@@ -158,7 +160,8 @@ fit_single_model <- function(
   iter_warmup,
   iter_sampling,
   adapt_delta,
-  max_treedepth
+  max_treedepth,
+  refresh
 ) {
   if (model_type != "efsmm" & is.list(maxima_list)) {
     maxima_list <- unlist(lapply(maxima_list, FUN = max))
@@ -201,7 +204,25 @@ fit_single_model <- function(
       call. = FALSE
     )
   }
+  executable_exists <- function(stan_file) {
+    exe <- sub("\\.stan$", "", stan_file)
 
+    if (.Platform$OS.type == "windows") {
+      exe <- paste0(exe, ".exe")
+    }
+
+    file.exists(exe)
+  }
+
+  cat("Fitting ", model_type, " model...\n")
+  if (!executable_exists(model_file)) {
+    message(
+      paste(
+        model_type,
+        "model not yet compiled in this machine — compilation may take several minutes..."
+      )
+    )
+  }
   mod <- cmdstanr::cmdstan_model(model_file)
 
   fit <- mod$sample(
@@ -211,7 +232,8 @@ fit_single_model <- function(
     iter_warmup = iter_warmup,
     iter_sampling = iter_sampling,
     adapt_delta = adapt_delta,
-    max_treedepth = max_treedepth
+    max_treedepth = max_treedepth,
+    refresh = refresh
   )
 
   return(fit)

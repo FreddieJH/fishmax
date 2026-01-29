@@ -16,7 +16,7 @@
 plot_fit <- function(
   fit,
   xmin = 0,
-  xmax = 300,
+  xmax = 100,
   xstep = 1,
   ci = 0.8,
   k = 20,
@@ -75,25 +75,19 @@ plot_fit <- function(
       legend.justification = c(1, 1)
     )
 
+  max_table <- get_lmax(fit_slim, k = k)
+  colnames(max_table) <- gsub("\\.[0-9]+%", "", colnames(max_table))
+
   p_partb <-
-    get_lmax(fit_slim, k = k) |>
-    dplyr::mutate(
-      model = dplyr::case_match(
-        model,
-        "efs" ~ "EFS",
-        "evt" ~ "EVT (GEV)",
-        "evt_gumbel" ~ "EVT (Gumbel)",
-        "efsmm" ~ "EFSmm"
-      )
-    ) |>
+    max_table |>
     ggplot2::ggplot() +
     ggplot2::aes(x = max_fit, y = model, col = model) +
-    ggplot2::geom_point(size = 5) +
     ggplot2::geom_errorbar(
-      orientation = "x",
+      orientation = "y",
       ggplot2::aes(xmin = max_lwr, xmax = max_upr),
-      height = 0
+      width = 0
     ) +
+    ggplot2::geom_point(size = 5) +
     ggplot2::labs(y = NULL, x = expression(paste("Estimated ", L[max]))) +
     ggplot2::scale_x_continuous(
       labels = scales::label_number(suffix = "cm"),

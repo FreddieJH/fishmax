@@ -45,4 +45,5 @@ plot_traceplot <- function(fit) {
         ggplot2::theme(legend.position = "none")
     }
   )
+  return(plots)
 }

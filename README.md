@@ -9,21 +9,32 @@ the Generalised Extreme Value (GEV) distribution. The second approach
 uses knowledge on the underlying body size distribution to estimate the
 likely parameters of the underlying distribution that would give rise to
 the observed sample maxima. The two approaches are implemented using a
-Bayesian Framework.
+Bayesian Framework, for this you need to first install the cmdstanr R
+package, and then install cmdstan, which is the backend C++ toolchain
+that allows you to fit the bayesian models.
 
-## Installation
+## Installation of cmdstan
 
-Installation of fishmax also requires `cmdstan` to be installed. You can
-install cmdstan directly from R using `cmdstanr::install_cmdstan()`. To
-install cmdstanr, cmdstan and fishmax:
+<!-- maybe split into two chunks, install cmdstanr and then fishmax -->
+
+Use of fishmax model fitting functions requires `cmdstan` to be
+installed. You can install cmdstan directly from R using
+`cmdstanr::install_cmdstan()`. To install cmdstanr and cmdstan:
 
 ``` r
-install.packages("remotes")
 install.packages(
   "cmdstanr",
   repos = c('https://stan-dev.r-universe.dev', getOption("repos"))
 ) # installs cmdstanr R package
-cmdstanr::install_cmdstan() # installs cmdstan (C++ toolchain; note, may take several minutes)
+cmdstanr::install_cmdstan() # installs cmdstan (C++ toolchain); may take several minutes
+```
+
+## Installation of fishmax
+
+Then to install the fishmax package itself.
+
+``` r
+install.packages("remotes")
 remotes::install_github("FreddieJH/fishmax") # installs fishmax
 ```
 
@@ -45,7 +56,12 @@ maxima_list <- list(c(40, 39), 41, c(33, 34, 35), c(42, 40, 39), 31) #cm
 
 ### Model fitting
 
-First step is to fit the maxima models.
+<!--  -->
+
+First step is to fit the maxima models. If it is the first time fitting
+the models, they will first need to be compiled, this happens
+automatically in the background but may take a few minutes. Once the
+models are compiled the fitting proceedure will be much quicker.
 
 ``` r
 # By default, when fitting to a vector of maxima (only maximum known per sample), it will fit the EVT (GEV), EVT (Gumbel), and EFS models.
@@ -85,4 +101,30 @@ plot_traceplot(fit_single['efs'])
 ``` r
 # visualise the PDF of the maximum for each sample
 plot_fit(fit_single)
+```
+
+## Extended applications
+
+### Multiple species
+
+You may have a situation where you have many species, and you wish to
+estimate $L_{max}$ for each of them. Below is one method to achieve
+this.
+
+``` r
+
+spp_maxima_list <-
+  list(
+    spp1_maxima = c(40, 41, 35, 42, 31),
+    spp2_maxima = c(15, 23, 28, 25),
+    spp3_maxima = c(40, 41, 39, 26, 43, 48, 50),
+    spp4_maxima = c(12, 15, 14)
+  )
+spp_maxima_list_fits <- lapply(X = spp_maxima_list, FUN = fit_max_model)
+spp_maxima_list_lmax <- lapply(
+  X = spp_maxima_list_fits,
+  FUN = get_lmax,
+  ci = 0.8,
+  k = 20
+)
 ```
