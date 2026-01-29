@@ -7,7 +7,7 @@
 plot_fit(
   fit,
   xmin = 0,
-  xmax = 300,
+  xmax = 100,
   xstep = 1,
   ci = 0.8,
   k = 20,

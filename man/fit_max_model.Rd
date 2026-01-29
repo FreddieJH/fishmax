@@ -11,7 +11,8 @@ fit_max_model(
   iter_warmup = 2000,
   iter_sampling = 1000,
   adapt_delta = 0.999,
-  max_treedepth = 12
+  max_treedepth = 12,
+  refresh = 1000
 )
 }
 \arguments{

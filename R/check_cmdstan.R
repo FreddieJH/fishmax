@@ -16,7 +16,7 @@ check_cmdstan <- function() {
 
   if (!cmdstan_installed) {
     message(
-      "CmdStan not found. Please run fishmax::setup_cmdstan()"
+      "CmdStan not found. Please run cmdstanr::install_cmdstan()"
     )
   }
 
@@ -33,7 +33,7 @@ check_cmdstan <- function() {
 
   if (!toolchain_ok) {
     message(
-      "Issues with Cmdstan C++ toolchain Please run fishmax::setup_cmdstan()"
+      "Issues with Cmdstan C++ toolchain Please run cmdstanr::install_cmdstan()"
     )
   }
 
