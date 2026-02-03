@@ -1,7 +1,5 @@
 
-<img src="man/figures/fishmax_logo.png" width = 120 alt="fishmax Logo"/>
-
-# fishmax
+# fishmax <img src="man/figures/fishmax_logo.png" align="right" height="138" />
 
 The goal of fishmax provides a robust method to estimate the maximum
 body length of fishes, with uncertanty. The packages uses two
