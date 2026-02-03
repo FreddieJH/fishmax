@@ -14,7 +14,8 @@ Imports:
     checkmate,
     posterior,
     ggplot2, 
-    rlang
+    rlang,
+    evd
 Suggests:
     testthat (>= 3.0.0),
     cmdstanr (>= 0.6.0)

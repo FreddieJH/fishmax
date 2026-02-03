@@ -57,10 +57,18 @@ fit_max_model <- function(
       finite = TRUE,
       any.missing = FALSE,
       min.len = 1
-    ),
-    checkmate::test_list(length_maxima, types = "numeric", min.len = 1),
-    combine = "or",
-    .var.name = "length_maxima"
+    ) ||
+      checkmate::test_list(
+        length_maxima,
+        types = "numeric",
+        min.len = 1
+      ),
+    msg = paste(
+      "`length_maxima` must be either:",
+      "\n  - a numeric vector (finite, no missing values), or",
+      "\n  - a list of numeric vectors",
+      sep = ""
+    )
   )
 
   # If list, check at least one vector has length > 1 (for EFSMM)
