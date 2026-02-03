@@ -1,5 +1,5 @@
 
-<img src="man/fishmax_logo.png" width = 120 alt="fishmax Logo"/>
+<img src="man/figures/fishmax_logo.png" width = 120 alt="fishmax Logo"/>
 
 # fishmax
 

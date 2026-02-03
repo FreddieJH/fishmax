@@ -6,6 +6,6 @@ inst/stan/*.EXE
 docs
 data/analysis.rmd
 
-*.png
+# *.png
 *.exe
 
