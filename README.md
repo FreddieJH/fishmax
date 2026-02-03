@@ -1,4 +1,6 @@
 
+<img src="man/fishmax_logo.png" width = 120 alt="fishmax Logo"/>
+
 # fishmax
 
 The goal of fishmax provides a robust method to estimate the maximum

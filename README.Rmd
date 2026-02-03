@@ -11,6 +11,8 @@ knitr::opts_chunk$set(
 )
 ```
 
+<img src="man/fishmax_logo.png" width = 120 alt="fishmax Logo"/>
+
 # fishmax
 
 
