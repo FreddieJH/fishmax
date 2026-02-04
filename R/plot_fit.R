@@ -26,7 +26,14 @@ plot_fit <- function(
   # k <- length(maxima_vals)
   fit_slim <- fit[names(fit) != "maxima"]
 
-  pdf_list <- get_pdf(fit_slim, xmin = xmin, xmax = xmax, xstep = xstep, k = k)
+  pdf_list <- get_pdf(
+    fit_slim,
+    xmin = xmin,
+    xmax = xmax,
+    xstep = xstep,
+    k = k,
+    ci = ci
+  )
 
   pdf_tbl <-
     pdf_list |>
