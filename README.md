@@ -56,8 +56,6 @@ maxima_list <- list(c(40, 39), 41, c(33, 34, 35), c(42, 40, 39), 31) #cm
 
 ### Model fitting
 
-<!--  -->
-
 First step is to fit the maxima models. If it is the first time fitting
 the models, they will first need to be compiled, this happens
 automatically in the background but may take a few minutes. Once the
@@ -79,8 +77,9 @@ You can then obtain the estimates of $L_{max}$ from the models, chosing
 the credible interval of choice (here we use 80% credible intervals),
 and the 20-sample maxima. Here, we set $k$ to 20 (default value), to
 estimate $L_{max}$ if we had 20 samples, this is an arbitrary number but
-we recommend this value for consistency. Note that this is **not** the
-number of sample maxima used to fit the model.
+we recommend this value for consistency with other studies/analyses.
+Note that this is **not** the number of sample maxima used to fit the
+model.
 
 ``` r
 # estimate the 20-sample Lmax, showing 80% credible intervals

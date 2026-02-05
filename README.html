@@ -676,8 +676,6 @@ of a vector, or a list of vectors (multiple maxima per sample)/</p>
 <span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="co"># the same five example samples, but where more information is known for each sample</span></span>
 <span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>maxima_list <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="dv">40</span>, <span class="dv">39</span>), <span class="dv">41</span>, <span class="fu">c</span>(<span class="dv">33</span>, <span class="dv">34</span>, <span class="dv">35</span>), <span class="fu">c</span>(<span class="dv">42</span>, <span class="dv">40</span>, <span class="dv">39</span>), <span class="dv">31</span>) <span class="co">#cm</span></span></code></pre></div>
 <h3 id="model-fitting">Model fitting</h3>
-<!--  -->
-
 <p>First step is to fit the maxima models. If it is the first time
 fitting the models, they will first need to be compiled, this happens
 automatically in the background but may take a few minutes. Once the
@@ -694,9 +692,9 @@ models are compiled the fitting proceedure will be much quicker.</p>
 credible interval of choice (here we use 80% credible intervals), and
 the 20-sample maxima. Here, we set <span class="math inline">\(k\)</span> to 20 (default value), to estimate
 <span class="math inline">\(L_{max}\)</span> if we had 20 samples, this
-is an arbitrary number but we recommend this value for consistency. Note
-that this is <strong>not</strong> the number of sample maxima used to
-fit the model.</p>
+is an arbitrary number but we recommend this value for consistency with
+other studies/analyses. Note that this is <strong>not</strong> the
+number of sample maxima used to fit the model.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># estimate the 20-sample Lmax, showing 80% credible intervals</span></span>
 <span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="fu">get_lmax</span>(<span class="at">fit =</span> fit_single, <span class="at">ci =</span> <span class="fl">0.8</span>, <span class="at">k =</span> <span class="dv">20</span>)</span></code></pre></div>
 <table>
