@@ -11,19 +11,22 @@ plot_fit(
   xstep = 1,
   ci = 0.8,
   k = 20,
+  text_overlay = TRUE,
   col_pallette = c("#2E86AB", "#C77BA0", "#9e7948ff", "#7e348dff")
 )
 }
 \arguments{
 \item{fit}{Model fit object}
 
-\item{xmin, xmax}{Range bounds}
+\item{xmin, xmax}{Bounds of x-axis (Lmax)}
 
-\item{xstep}{Step size}
+\item{xstep}{Resolution of x-axis, larger step size = lower resolution = faster to run}
 
 \item{ci}{Credible interval width (default = 0.8)}
 
-\item{k}{The k-sample LMAX for estimation. Note that this is not mecesarily the number of sample maxima used to fit the model (default: 20)}
+\item{k}{The k-sample Lmax for estimation. Note that this is not necessarily the number of sample maxima used to fit the model (default: 20)}
+
+\item{text_overlay}{Set to FALSE to remove the vertical line and text overlay on the plot}
 }
 \value{
 Combined ggplot object
