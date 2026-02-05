@@ -9,3 +9,6 @@ data/analysis.rmd
 # *.png
 *.exe
 
+
+/.quarto/
+**/*.quarto_ipynb

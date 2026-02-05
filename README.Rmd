@@ -61,6 +61,7 @@ First step is to fit the maxima models. If it is the first time fitting the mode
 # By default, when fitting to a vector of maxima (only maximum known per sample), it will fit the EVT (GEV), EVT (Gumbel), and EFS models.
 fit_single <- fit_max_model(maxima_vector)
 
+
 # By default, when fitting to a list of maxima (largest m known per sample), it will fit all models: EVT (GEV), EVT (Gumbel), EFS, and EFSMM models.
 # Note that when fiting the models that can only take the maxima (EVT-GEV, EVT-Gumbel, and EFS), the models will only use the maximum from each sample
 fit_mult <- fit_max_model(maxima_list)
@@ -72,11 +73,20 @@ fit_mult <- fit_max_model(maxima_list)
 You can then obtain the estimates of $L_{max}$ from the models, chosing the credible interval of choice (here we use 80% credible intervals), and the 20-sample maxima. Here, we set $k$ to 20 (default value), to estimate $L_{max}$ if we had 20 samples, this is an arbitrary number but we recommend this value for consistency. Note that this is **not** the number of sample maxima used to fit the model.
 
 ```{r getlmax}
-# estimate the 20-sample LMAX , showing 80% credible intervals
+# estimate the 20-sample Lmax, showing 80% credible intervals
 get_lmax(fit = fit_single, ci = 0.8, k = 20)
 ```
 
+
+```{r eval = TRUE, echo = FALSE}
+knitr::kable(read.csv("man/tables/lmax_example_table.csv"), format = "html")
+```
+
 ### Check the model fit with traceplots
+
+In Bayesian MCMC models, traceplots show the sequence of parameter values sampled by the Markov chains over iterations. Each line represents a separate chain. Good traceplots look like random, stationary noise within a stable range, with all chains overlapping, indicating that the chains have converged and are efficiently exploring the posterior distribution. Visible trends, poor mixing between chains, or chains stuck in different regions suggest lack of convergence or sampling problems.
+
+Each facet of the plot shows either a parameter traceplot, or the traceplot of the log posterior density. The absolute value of the Log posterior density is not important, and shouldn't be compared between models, but you are looking for convergence in the chains of the Log posterior density to indicate that the model has converged properly.
 
 ```{r traceplot}
 # check to make sure there is convergence of the model parameters
@@ -84,14 +94,65 @@ plot_traceplot(fit_single)
 
 # or if you only want to look at the EFS model
 plot_traceplot(fit_single['efs'])
+
+```
+
+Example of a good-mixing in MCMC traceplot:
+```{r eval = TRUE, echo = FALSE}
+knitr::include_graphics("man/figures/good_traceplot.png")
+```
+
+Example of potenital issues in MCMC traceplot, notice how chains are struggling to converge on a parameter value:
+```{r eval = TRUE, echo = FALSE}
+knitr::include_graphics("man/figures/bad_traceplot.png")
 ```
 
 ### Visualise the $L_{max}$ estimates
 
+By default we use the 80% bayesian credible intervals (argument = `ci`) on the estimate of $L_{max}$, and we also report the '20-sample' $L_{max}$ (argument = `k`). We recommend keeping these default values for ease of comparison between analyses. 
+
 ```{r visualisation}
-# visualise the PDF of the maximum for each sample
-plot_fit(fit_single)
+# visualise the PDF of the maximum for each sample (setting upper limit on x-axis to 100cm)
+plot_fit(fit_single, xmax = 100, ci = 0.8, k = 20)
 ```
+
+```{r eval = TRUE, echo = FALSE}
+knitr::include_graphics("man/figures/plotfit_CI08.png")
+```
+
+We can look at the 50% credible intervals: 
+
+```{r visualisation-changeCI}
+# visualise the PDF of the maximum for each sample (setting upper limit on x-axis to 100cm)
+plot_fit(fit_single, xmax = 100, ci = 0.5, k = 20)
+```
+
+```{r eval = TRUE, echo = FALSE}
+knitr::include_graphics("man/figures/plotfit_CI05_k5.png")
+```
+
+Or estimate the '5-sample' $L_{max}$ instead of the recommended '20-sample' $L_{max}$, CIs are still at 50%
+
+```{r visualisation-lowres}
+# visualise the PDF of the maximum for each sample (setting upper limit on x-axis to 100cm)
+plot_fit(fit_single, xmax = 100, ci = 0.5, k = 5)
+```
+
+```{r eval = TRUE, echo = FALSE}
+knitr::include_graphics("man/figures/plotfit_CI05_k5.png")
+```
+
+To produce quick-and-dirty plots you can reduce the resolution of the x-axis 'steps', for example:
+
+```{r visualisation-changek}
+# visualise the PDF of the maximum for each sample (setting upper limit on x-axis to 100cm)
+plot_fit(fit_single, xmax = 100, ci = 0.5, k = 5, xstep = 10)
+```
+
+```{r eval = TRUE, echo = FALSE}
+knitr::include_graphics("man/figures/plotfit_lowres.png")
+```
+
 
 
 ## Extended applications

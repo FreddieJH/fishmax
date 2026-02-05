@@ -3,10 +3,11 @@
 #' Creates publication-ready plots comparing EVT and EFS model fits
 #'
 #' @param fit Model fit object
-#' @param xmin,xmax Range bounds
-#' @param xstep Step size
+#' @param xmin,xmax Bounds of x-axis (Lmax)
+#' @param xstep Resolution of x-axis, larger step size = lower resolution = faster to run
 #' @param ci Credible interval width (default = 0.8)
-#' @param k The k-sample LMAX for estimation. Note that this is not mecesarily the number of sample maxima used to fit the model (default: 20)
+#' @param k The k-sample Lmax for estimation. Note that this is not necessarily the number of sample maxima used to fit the model (default: 20)
+#' @param text_overlay Set to FALSE to remove the vertical line and text overlay on the plot
 #'
 #' @return Combined ggplot object
 #' @export
@@ -20,6 +21,7 @@ plot_fit <- function(
   xstep = 1,
   ci = 0.8,
   k = 20,
+  text_overlay = TRUE,
   col_pallette = c("#2E86AB", "#C77BA0", "#9e7948ff", "#7e348dff")
 ) {
   maxima_vals <- unlist(lapply(fit[["maxima"]], FUN = max))
@@ -48,6 +50,10 @@ plot_fit <- function(
       )
     )
 
+  max_table <- get_lmax(fit_slim, k = k, ci = ci)
+  colnames(max_table) <- gsub("\\.[0-9]+%", "", colnames(max_table))
+
+  percentile_percent <- (1 - (1 / k)) * 100
   # efs_underlying <- get_underlying(efs_fit)
 
   p_main <-
@@ -68,6 +74,32 @@ plot_fit <- function(
       labels = scales::label_number(suffix = "cm"),
       limits = c(xmin, xmax)
     ) +
+    {
+      if (text_overlay) {
+        geomtextpath::geom_textvline(
+          aes(xintercept = max_fit, col = model, label = label),
+          lty = 2,
+          size = 7,
+          data = max_table |>
+            mutate(
+              label = dplyr::case_when(
+                stringr::str_detect(model, "EVT") ~ paste0(
+                  k,
+                  "-sample Lmax (",
+                  percentile_percent,
+                  "th percentile)"
+                ),
+                stringr::str_detect(model, "EFS") ~ paste0(
+                  "Expected Lmax given ",
+                  k,
+                  " samples"
+                )
+              )
+            ),
+          show.legend = FALSE
+        )
+      }
+    } +
     ggplot2::scale_color_manual(values = col_pallette) +
     ggplot2::scale_fill_manual(values = col_pallette) +
     ggplot2::labs(
@@ -81,9 +113,6 @@ plot_fit <- function(
       legend.position = c(0.9, 0.9),
       legend.justification = c(1, 1)
     )
-
-  max_table <- get_lmax(fit_slim, k = k)
-  colnames(max_table) <- gsub("\\.[0-9]+%", "", colnames(max_table))
 
   p_partb <-
     max_table |>

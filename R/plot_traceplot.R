@@ -25,6 +25,12 @@ plot_traceplot <- function(fit) {
         direction = "long"
       )
 
+      long$name <- ifelse(
+        long$name == "lp__",
+        "Log posterior density",
+        long$name
+      )
+
       ggplot2::ggplot(
         long,
         ggplot2::aes(
@@ -40,7 +46,17 @@ plot_traceplot <- function(fit) {
           scales = "free",
           ncol = ceiling(sqrt(n_params))
         ) +
-        ggplot2::labs(title = model_name) +
+        ggplot2::labs(
+          title = paste(
+            "Traceplot for",
+            model_name,
+            "model (n = ",
+            n_params - 1,
+            "parameters)"
+          ),
+          x = "Iteration",
+          y = "Parameter value"
+        ) +
         ggplot2::theme_classic(20) +
         ggplot2::theme(legend.position = "none")
     }

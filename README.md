@@ -67,6 +67,7 @@ models are compiled the fitting proceedure will be much quicker.
 # By default, when fitting to a vector of maxima (only maximum known per sample), it will fit the EVT (GEV), EVT (Gumbel), and EFS models.
 fit_single <- fit_max_model(maxima_vector)
 
+
 # By default, when fitting to a list of maxima (largest m known per sample), it will fit all models: EVT (GEV), EVT (Gumbel), EFS, and EFSMM models.
 # Note that when fiting the models that can only take the maxima (EVT-GEV, EVT-Gumbel, and EFS), the models will only use the maximum from each sample
 fit_mult <- fit_max_model(maxima_list)
@@ -82,11 +83,134 @@ we recommend this value for consistency. Note that this is **not** the
 number of sample maxima used to fit the model.
 
 ``` r
-# estimate the 20-sample LMAX , showing 80% credible intervals
+# estimate the 20-sample Lmax, showing 80% credible intervals
 get_lmax(fit = fit_single, ci = 0.8, k = 20)
 ```
 
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+model
+</th>
+
+<th style="text-align:right;">
+
+max_fit.50.
+</th>
+
+<th style="text-align:right;">
+
+max_lwr.10.
+</th>
+
+<th style="text-align:right;">
+
+max_upr.90.
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+EVT (GEV)
+</td>
+
+<td style="text-align:right;">
+
+51.68184
+</td>
+
+<td style="text-align:right;">
+
+44.61300
+</td>
+
+<td style="text-align:right;">
+
+65.70633
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+EVT (Gumbel)
+</td>
+
+<td style="text-align:right;">
+
+50.34146
+</td>
+
+<td style="text-align:right;">
+
+43.90427
+</td>
+
+<td style="text-align:right;">
+
+62.41632
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+EFS
+</td>
+
+<td style="text-align:right;">
+
+45.04415
+</td>
+
+<td style="text-align:right;">
+
+40.30297
+</td>
+
+<td style="text-align:right;">
+
+54.33069
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
 ### Check the model fit with traceplots
+
+In Bayesian MCMC models, traceplots show the sequence of parameter
+values sampled by the Markov chains over iterations. Each line
+represents a separate chain. Good traceplots look like random,
+stationary noise within a stable range, with all chains overlapping,
+indicating that the chains have converged and are efficiently exploring
+the posterior distribution. Visible trends, poor mixing between chains,
+or chains stuck in different regions suggest lack of convergence or
+sampling problems.
+
+Each facet of the plot shows either a parameter traceplot, or the
+traceplot of the log posterior density. The absolute value of the Log
+posterior density is not important, and shouldn’t be compared between
+models, but you are looking for convergence in the chains of the Log
+posterior density to indicate that the model has converged properly.
 
 ``` r
 # check to make sure there is convergence of the model parameters
@@ -96,12 +220,55 @@ plot_traceplot(fit_single)
 plot_traceplot(fit_single['efs'])
 ```
 
+Example of a good-mixing in MCMC traceplot:
+<img src="man/figures/good_traceplot.png" width="100%" />
+
+Example of potenital issues in MCMC traceplot, notice how chains are
+struggling to converge on a parameter value:
+<img src="man/figures/bad_traceplot.png" width="100%" />
+
 ### Visualise the $L_{max}$ estimates
 
+By default we use the 80% bayesian credible intervals (argument = `ci`)
+on the estimate of $L_{max}$, and we also report the ‘20-sample’
+$L_{max}$ (argument = `k`). We recommend keeping these default values
+for ease of comparison between analyses.
+
 ``` r
-# visualise the PDF of the maximum for each sample
-plot_fit(fit_single)
+# visualise the PDF of the maximum for each sample (setting upper limit on x-axis to 100cm)
+plot_fit(fit_single, xmax = 100, ci = 0.8, k = 20)
 ```
+
+<img src="man/figures/plotfit_CI08.png" width="100%" />
+
+We can look at the 50% credible intervals:
+
+``` r
+# visualise the PDF of the maximum for each sample (setting upper limit on x-axis to 100cm)
+plot_fit(fit_single, xmax = 100, ci = 0.5, k = 20)
+```
+
+<img src="man/figures/plotfit_CI05_k5.png" width="100%" />
+
+Or estimate the ‘5-sample’ $L_{max}$ instead of the recommended
+‘20-sample’ $L_{max}$, CIs are still at 50%
+
+``` r
+# visualise the PDF of the maximum for each sample (setting upper limit on x-axis to 100cm)
+plot_fit(fit_single, xmax = 100, ci = 0.5, k = 5)
+```
+
+<img src="man/figures/plotfit_CI05_k5.png" width="100%" />
+
+To produce quick-and-dirty plots you can reduce the resolution of the
+x-axis ‘steps’, for example:
+
+``` r
+# visualise the PDF of the maximum for each sample (setting upper limit on x-axis to 100cm)
+plot_fit(fit_single, xmax = 100, ci = 0.5, k = 5, xstep = 10)
+```
+
+<img src="man/figures/plotfit_lowres.png" width="100%" />
 
 ## Extended applications
 
