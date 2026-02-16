@@ -11,8 +11,8 @@ plot_lmax(
   xstep = 1,
   ci = 0.8,
   k = 20,
-  show_lines = TRUE,
-  col_pallette = c("#2E86AB", "#C77BA0", "#9e7948ff", "#7e348dff")
+  show_annotations = TRUE,
+  col_pallette = c("#2E86AB", "#9e7948ff", "#C77BA0", "#7e348dff")
 )
 }
 \arguments{

@@ -51,26 +51,25 @@ fit_max_model <- function(
 ) {
   check_cmdstan()
   # Input validation
-  checkmate::assert(
-    checkmate::test_numeric(
-      unique(length_maxima),
-      finite = TRUE,
-      any.missing = FALSE,
-      min.len = 3
-    ) ||
-      checkmate::test_list(
-        unqiue(length_maxima),
-        types = "numeric",
-        min.len = 3
-      ),
-    msg = paste(
-      "`length_maxima` must be either:",
-      "\n  - a numeric vector (finite, no missing values), or",
-      "\n  - a list of numeric vectors",
-      "\n with at least three unique values.",
-      sep = ""
+  x <- unique(length_maxima)
+  is_numeric_vec <- is.numeric(x) &&
+    all(is.finite(x)) &&
+    !anyNA(x) &&
+    length(x) >= 3
+
+  is_list_numeric <- is.list(x) &&
+    length(x) >= 3 &&
+    all(vapply(x, is.numeric, logical(1)))
+
+  if (!is_numeric_vec && !is_list_numeric) {
+    stop(
+      "`length_maxima` must be either:\n",
+      "  - a numeric vector (finite, no missing values), or\n",
+      "  - a list of numeric vectors\n",
+      "with at least three unique values.",
+      call. = FALSE
     )
-  )
+  }
 
   # If list, check at least one vector has length > 1 (for EFSMM)
   if (is.list(length_maxima)) {
@@ -142,10 +141,29 @@ fit_max_model <- function(
   #   }
   # }
 
-  checkmate::assert_int(chains, lower = 1)
-  checkmate::assert_int(iter_warmup, lower = 100)
-  checkmate::assert_int(iter_sampling, lower = 100)
+  if (
+    !is.numeric(chains) || length(chains) != 1 || chains < 1 || chains %% 1 != 0
+  ) {
+    stop("`chains` must be a single integer >= 1.", call. = FALSE)
+  }
 
+  if (
+    !is.numeric(iter_warmup) ||
+      length(iter_warmup) != 1 ||
+      iter_warmup < 100 ||
+      iter_warmup %% 1 != 0
+  ) {
+    stop("`iter_warmup` must be a single integer >= 100.", call. = FALSE)
+  }
+
+  if (
+    !is.numeric(iter_sampling) ||
+      length(iter_sampling) != 1 ||
+      iter_sampling < 100 ||
+      iter_sampling %% 1 != 0
+  ) {
+    stop("`iter_sampling` must be a single integer >= 100.", call. = FALSE)
+  }
   # Convert to list format
   maxima_list <- if (is.list(length_maxima)) {
     length_maxima
@@ -213,6 +231,12 @@ fit_single_model <- function(
     package = "fishmax"
   )
 
+  # validate the length_maxima vector (or list)
+  if (length(unique(unlist(lapply(maxima_list, FUN = max)))) < 3) {
+    stop("Number of unique sample maxima (k) must be at least 3", call. = FALSE)
+  }
+
+  # validate the stan file
   if (!file.exists(model_file) || model_file == "") {
     stop(
       "Stan model file not found. Available files: ",
