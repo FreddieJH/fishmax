@@ -10,7 +10,7 @@ lmax_posterior(fit, ci = 0.8, k = 20)
 \item{fit}{Named list of CmdStanMCMC objects}
 }
 \value{
-Named list of tibbles containing posterior samples for each model
+Named list of vectors containing posterior samples for each model
 }
 \description{
 Extracts posterior samples from fitted models and estimates the lmax given the parameter posteriors

@@ -53,20 +53,21 @@ fit_max_model <- function(
   # Input validation
   checkmate::assert(
     checkmate::test_numeric(
-      length_maxima,
+      unique(length_maxima),
       finite = TRUE,
       any.missing = FALSE,
-      min.len = 1
+      min.len = 3
     ) ||
       checkmate::test_list(
-        length_maxima,
+        unqiue(length_maxima),
         types = "numeric",
-        min.len = 1
+        min.len = 3
       ),
     msg = paste(
       "`length_maxima` must be either:",
       "\n  - a numeric vector (finite, no missing values), or",
       "\n  - a list of numeric vectors",
+      "\n with at least three unique values.",
       sep = ""
     )
   )

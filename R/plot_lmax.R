@@ -14,14 +14,14 @@
 #' @importFrom ggplot2 ggplot aes geom_ribbon geom_line geom_rug scale_x_continuous labs theme_classic
 #' @importFrom scales label_number
 #' @importFrom dplyr tibble
-plot_fit <- function(
+plot_lmax <- function(
   fit,
   xmin = 0,
   xmax = 100,
   xstep = 1,
   ci = 0.8,
   k = 20,
-  text_overlay = TRUE,
+  show_lines = TRUE,
   col_pallette = c("#2E86AB", "#C77BA0", "#9e7948ff", "#7e348dff")
 ) {
   maxima_vals <- unlist(lapply(fit[["maxima"]], FUN = max))
@@ -75,31 +75,42 @@ plot_fit <- function(
       limits = c(xmin, xmax)
     ) +
     {
-      if (text_overlay) {
-        geomtextpath::geom_textvline(
-          aes(xintercept = max_fit, col = model, label = label),
+      if (show_lines) {
+        ggplot2::geom_vline(
+          aes(xintercept = max_fit, col = model),
           lty = 2,
           size = 7,
-          data = max_table |>
-            mutate(
-              label = dplyr::case_when(
-                stringr::str_detect(model, "EVT") ~ paste0(
-                  k,
-                  "-sample Lmax (",
-                  percentile_percent,
-                  "th percentile)"
-                ),
-                stringr::str_detect(model, "EFS") ~ paste0(
-                  "Expected Lmax given ",
-                  k,
-                  " samples"
-                )
-              )
-            ),
+          data = max_table,
           show.legend = FALSE
         )
       }
     } +
+    # {
+    #   if (text_overlay) {
+    #     geomtextpath::geom_textvline(
+    #       aes(xintercept = max_fit, col = model, label = label),
+    #       lty = 2,
+    #       size = 7,
+    #       data = max_table |>
+    #         mutate(
+    #           label = dplyr::case_when(
+    #             stringr::str_detect(model, "EVT") ~ paste0(
+    #               k,
+    #               "-sample Lmax (",
+    #               percentile_percent,
+    #               "th percentile)"
+    #             ),
+    #             stringr::str_detect(model, "EFS") ~ paste0(
+    #               "Expected Lmax given ",
+    #               k,
+    #               " samples"
+    #             )
+    #           )
+    #         ),
+    #       show.legend = FALSE
+    #     )
+    #   }
+    # } +
     ggplot2::scale_color_manual(values = col_pallette) +
     ggplot2::scale_fill_manual(values = col_pallette) +
     ggplot2::labs(

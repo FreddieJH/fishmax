@@ -13,13 +13,16 @@ Bayesian Framework, for this you need to first install the cmdstanr R
 package, and then install cmdstan, which is the backend C++ toolchain
 that allows you to fit the bayesian models.
 
-## Installation of cmdstan
+## Installation of cmdstan (once per machine)
 
 <!-- maybe split into two chunks, install cmdstanr and then fishmax -->
 
 Use of fishmax model fitting functions requires `cmdstan` to be
 installed. You can install cmdstan directly from R using
-`cmdstanr::install_cmdstan()`. To install cmdstanr and cmdstan:
+`cmdstanr::install_cmdstan()`. Note that if you do not have cmdstan on
+your machine, then it may take a few minutes to install.
+
+To install cmdstanr and cmdstan:
 
 ``` r
 install.packages(
@@ -29,7 +32,7 @@ install.packages(
 cmdstanr::install_cmdstan() # installs cmdstan (C++ toolchain); may take several minutes
 ```
 
-## Installation of fishmax
+## Installation of fishmax (once per machine)
 
 Then to install the fishmax package itself.
 
@@ -38,52 +41,66 @@ install.packages("remotes")
 remotes::install_github("FreddieJH/fishmax") # installs fishmax
 ```
 
-## Example
+## Loading of fishmax (every instance)
 
-This is a basic example which shows you how to fit an EVT and EFS model
-to a set of maxima values. Length maxima can either be in the from of a
-vector, or a list of vectors (multiple maxima per sample)/
+Once you have installed the cmdstanr package, cmdstan software, and the
+fishmax package, you can load it.
 
 ``` r
 library(fishmax)
-
-# five example sample maxima (e.g., max from five fishing competitions)
-maxima_vector <- c(40, 41, 35, 42, 31) #cm
-
-# the same five example samples, but where more information is known for each sample
-maxima_list <- list(c(40, 39), 41, c(33, 34, 35), c(42, 40, 39), 31) #cm
 ```
 
-### Model fitting
+## Example 1 - only the sample maxima are known
 
-First step is to fit the maxima models. If it is the first time fitting
-the models, they will first need to be compiled, this happens
-automatically in the background but may take a few minutes. Once the
-models are compiled the fitting proceedure will be much quicker.
+Let’s say you have a fishing competition, where five fishers report only
+their largest catch for a specific fish species. The reported lengths
+are 40, 41, 35, 42 and 31 cm. The total number of fish that each fisher
+caught (sample size) is unknown.
+
+The first step is to fit the lmax estimation models. There are three
+models, that each have their own assumptions: 1. Extreme Value Theory
+(using GEV distribution) - EVT (GEV) 2. Extreme Value Theory (using
+Gumbel distribution) - EVT (Gumbel) 3. Exact Finite Sample approach -
+EFS
+
+### 1. Model Fitting
 
 ``` r
-# By default, when fitting to a vector of maxima (only maximum known per sample), it will fit the EVT (GEV), EVT (Gumbel), and EFS models.
-fit_single <- fit_max_model(maxima_vector)
 
+length_maxima <- c(40, 41, 35, 42, 31) #cm
 
-# By default, when fitting to a list of maxima (largest m known per sample), it will fit all models: EVT (GEV), EVT (Gumbel), EFS, and EFSMM models.
-# Note that when fiting the models that can only take the maxima (EVT-GEV, EVT-Gumbel, and EFS), the models will only use the maximum from each sample
-fit_mult <- fit_max_model(maxima_list)
+# Fitting the model - by default fits all three models (unless stated otherwise using the `model_type` argument)
+model_fit <- fit_max_model(length_maxima)
 ```
 
-### Get $L_{max}$ estimates
+### 2. Model Diagnostics
 
-You can then obtain the estimates of $L_{max}$ from the models, chosing
-the credible interval of choice (here we use 80% credible intervals),
-and the 20-sample maxima. Here, we set $k$ to 20 (default value), to
-estimate $L_{max}$ if we had 20 samples, this is an arbitrary number but
-we recommend this value for consistency with other studies/analyses.
-Note that this is **not** the number of sample maxima used to fit the
+To check whether the models have converged, we inspect the MCMC
+traceplots. These show whether the chains mix well and explore the
+posterior without drift.
+
+``` r
+# check for convergence
+plot_traceplot(model_fit)
+```
+
+Example of a good-mixing in MCMC traceplot:
+<img src="man/figures/good_traceplot.png" width="100%" />
+
+Example of potenital issues in MCMC traceplot, notice how chains are
+struggling to converge on a parameter value:
+<img src="man/figures/bad_traceplot.png" width="100%" />
+
+If you observe chains that are struggling to converge for a parameter
+then it is worth trying to increase the number of iterations of the
 model.
 
+### 3. Model Predictions (Estimate $L_{max}$)
+
 ``` r
-# estimate the 20-sample Lmax, showing 80% credible intervals
-get_lmax(fit = fit_single, ci = 0.8, k = 20)
+# default credible interval = 80%
+# default Lmax estimation is the 20-sample Lmax (k = 20) - Recommended
+get_lmax(model_fit)
 ```
 
 <table>
@@ -194,84 +211,60 @@ EFS
 
 </table>
 
-### Check the model fit with traceplots
-
-In Bayesian MCMC models, traceplots show the sequence of parameter
-values sampled by the Markov chains over iterations. Each line
-represents a separate chain. Good traceplots look like random,
-stationary noise within a stable range, with all chains overlapping,
-indicating that the chains have converged and are efficiently exploring
-the posterior distribution. Visible trends, poor mixing between chains,
-or chains stuck in different regions suggest lack of convergence or
-sampling problems.
-
-Each facet of the plot shows either a parameter traceplot, or the
-traceplot of the log posterior density. The absolute value of the Log
-posterior density is not important, and shouldn’t be compared between
-models, but you are looking for convergence in the chains of the Log
-posterior density to indicate that the model has converged properly.
+### 4. Visualiation
 
 ``` r
-# check to make sure there is convergence of the model parameters
-plot_traceplot(fit_single)
-
-# or if you only want to look at the EFS model
-plot_traceplot(fit_single['efs'])
-```
-
-Example of a good-mixing in MCMC traceplot:
-<img src="man/figures/good_traceplot.png" width="100%" />
-
-Example of potenital issues in MCMC traceplot, notice how chains are
-struggling to converge on a parameter value:
-<img src="man/figures/bad_traceplot.png" width="100%" />
-
-### Visualise the $L_{max}$ estimates
-
-By default we use the 80% bayesian credible intervals (argument = `ci`)
-on the estimate of $L_{max}$, and we also report the ‘20-sample’
-$L_{max}$ (argument = `k`). We recommend keeping these default values
-for ease of comparison between analyses.
-
-``` r
-# visualise the PDF of the maximum for each sample (setting upper limit on x-axis to 100cm)
-plot_fit(fit_single, xmax = 100, ci = 0.8, k = 20)
+# default credible interval = 80%
+# default Lmax estimation is the 20-sample Lmax (k = 20) - Recommended
+# x-axis range default is 0 to 100, but can be changed using the xmin and xmax arguments
+plot_lmax(model_fit, xmax = 100)
 ```
 
 <img src="man/figures/plotfit_CI08.png" width="100%" />
 
-We can look at the 50% credible intervals:
+You can also change the resolution in your x-axis, for example if you
+want a quick-and-dirty plot you can reduce the resolution of the x-axis
+(oincrease `steps` argument):
 
 ``` r
-# visualise the PDF of the maximum for each sample (setting upper limit on x-axis to 100cm)
-plot_fit(fit_single, xmax = 100, ci = 0.5, k = 20)
-```
 
-<img src="man/figures/plotfit_CI05_k5.png" width="100%" />
-
-Or estimate the ‘5-sample’ $L_{max}$ instead of the recommended
-‘20-sample’ $L_{max}$, CIs are still at 50%
-
-``` r
-# visualise the PDF of the maximum for each sample (setting upper limit on x-axis to 100cm)
-plot_fit(fit_single, xmax = 100, ci = 0.5, k = 5)
-```
-
-<img src="man/figures/plotfit_CI05_k5.png" width="100%" />
-
-To produce quick-and-dirty plots you can reduce the resolution of the
-x-axis ‘steps’, for example:
-
-``` r
-# visualise the PDF of the maximum for each sample (setting upper limit on x-axis to 100cm)
-plot_fit(fit_single, xmax = 100, ci = 0.5, k = 5, xstep = 10)
+plot_lmax(fit_single, xmax = 100, xstep = 10)
 ```
 
 <img src="man/figures/plotfit_lowres.png" width="100%" />
 
-## Extended applications
+## Example 2 - more information is known per sample
 
-### Multiple species
+Let’s say you have another fishing competition, there are also five
+fishers, but this time some of them report not only their largest catch
+for a specific fish species, but also the second, or third largest. The
+first fisher might report their two largest fish (40 and 39 cm), the
+second fisher their largest fish (41cm), the third fisher might report
+their three largest fish (33, 34 and 35 cm), etc. Once again, the total
+number of fish that each fisher caught (sample size) is unknown.
+
+The same three models (EVT (GEV), EVT (Gumbel) and EFS) are fitted.
+However this time, the EFS method can utilise the extra available
+information (the second or third largest individuals in a sample). Note
+that the two EVT methods cannot utilise the multiple maxima, so only the
+maximum of each sample is used (the result should be the same as in the
+original example).
+
+The code to fit, diagnose, predict and plot Lmax is the same.
+
+``` r
+# a list of vectors (of varying length)
+# each element of the list represents a single fisher (five fishers)
+length_maxima_multiple <- list(c(40, 39), 41, c(33, 34, 35), c(42, 40, 39), 31)
+
+
+model_fit_multiple <- fit_max_model(length_maxima_multiple) # model fitting
+plot_traceplot(model_fit_multiple) # check model diagnostics
+get_lmax(model_fit_multiple) # output Lmax estimates
+plot_lmax(model_fit_multiple) # plot the lmax estimates
+```
+
+## Example 3 - Estimating $L_{max}$ for multiple species
 
 You may have a situation where you have many species, and you wish to
 estimate $L_{max}$ for each of them. Below is one method to achieve

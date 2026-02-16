@@ -15,7 +15,8 @@ Imports:
     posterior,
     ggplot2, 
     rlang,
-    evd
+    evd, 
+    patchwork
 Suggests:
     testthat (>= 3.0.0),
     cmdstanr (>= 0.6.0)
