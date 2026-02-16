@@ -13,13 +13,17 @@
 get_lmax <- function(fit, ci = 0.8, k = 20) {
   validate_fit(fit)
 
-  # Validate parameters
+  # validate ci
   if (!is.numeric(ci) || length(ci) != 1 || ci <= 0 || ci >= 1) {
     stop("'ci' must be a single numeric value between 0 and 1", call. = FALSE)
   }
 
-  if (!is.numeric(k) || length(k) != 1 || k <= 0) {
-    stop("'k' must be a single positive numeric value", call. = FALSE)
+  # validate k
+  if (!is.numeric(k) || length(k) != 1 || k < 3) {
+    stop(
+      "'k' must be a single positive numeric value of at least 3",
+      call. = FALSE
+    )
   }
 
   fit_slim <- fit[names(fit) != "maxima"]

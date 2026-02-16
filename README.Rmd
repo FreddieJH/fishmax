@@ -53,9 +53,9 @@ library(fishmax)
 Let's say you have a fishing competition, where five fishers report only their largest catch for a specific fish species. The reported lengths are 40, 41, 35, 42 and 31 cm. The total number of fish that each fisher caught (sample size) is unknown. 
 
 The first step is to fit the lmax estimation models. There are three models, that each have their own assumptions:
-1. Extreme Value Theory (using GEV distribution) - EVT (GEV)
-2. Extreme Value Theory (using Gumbel distribution) - EVT (Gumbel)
-3. Exact Finite Sample approach - EFS
+  1. Extreme Value Theory (using GEV distribution) - EVT (GEV)
+  2. Extreme Value Theory (using Gumbel distribution) - EVT (Gumbel)
+  3. Exact Finite Sample approach - EFS
 
 
 ### 1. Model Fitting
@@ -74,14 +74,15 @@ model_fit <- fit_max_model(length_maxima)
 
 When checking to see if a model has converged, the first thing to do is look at the Rhat values of the parameters in the summary by printing the fitted model to the console (e.g., `model_fit`), Rhat should be less than 1.1 in early workflows, and can only really be trusted if less than 1.01. 
 
-To check whether the models have converged, we inspect the MCMC traceplots. These show whether the chains mix well and explore the posterior without drift. 
+To check whether the models have converged, we inspect the MCMC traceplots. These show whether the chains mix well and explore the posterior without drift. See below for examples of good and bad model convergence. 
 
 For more information about how to identify and deal with Stan model convergence issues see https://mc-stan.org/learn-stan/diagnostics-warnings.html . 
 
 
 ```{r traceplot}
-# check for convergence
-plot_traceplot(model_fit)
+
+model_fit # check out the rhat values
+plot_traceplot(model_fit) # check out traceplots
 ```
 
 Example of a good-mixing in MCMC traceplot:

@@ -83,15 +83,17 @@ than 1.1 in early workflows, and can only really be trusted if less than
 
 To check whether the models have converged, we inspect the MCMC
 traceplots. These show whether the chains mix well and explore the
-posterior without drift.
+posterior without drift. See below for examples of good and bad model
+convergence.
 
 For more information about how to identify and deal with Stan model
 convergence issues see
 <https://mc-stan.org/learn-stan/diagnostics-warnings.html> .
 
 ``` r
-# check for convergence
-plot_traceplot(model_fit)
+
+model_fit # check out the rhat values
+plot_traceplot(model_fit) # check out traceplots
 ```
 
 Example of a good-mixing in MCMC traceplot:

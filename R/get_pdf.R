@@ -12,6 +12,8 @@
 #' @return Named list of tibbles with size and PDF estimates for each model.
 #' @export
 get_pdf <- function(fit, xmin = 0, xmax = 300, xstep = 1, ci = 0.8, k = 20) {
+
+  
   fit_slim <- fit[names(fit) != "maxima"]
   posterior_list <- get_posterior(fit_slim)
   sizes <- seq(xmin, xmax, xstep)

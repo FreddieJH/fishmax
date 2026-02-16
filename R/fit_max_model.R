@@ -106,6 +106,18 @@ fit_max_model <- function(
       model_type <- all_models[which(all_models != "efsmm")]
     }
   } else {
+    # check for invalid values
+    invalid <- setdiff(model_type, all_models)
+    if (length(invalid) > 0) {
+      stop(
+        "Invalid model_type: ",
+        paste(invalid, collapse = ", "),
+        ". Must be one of: ",
+        paste(all_models, collapse = ", "),
+        call. = FALSE
+      )
+    }
+
     model_type <- match.arg(model_type, several.ok = TRUE)
   }
 
