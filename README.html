@@ -687,12 +687,20 @@ EFS</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a></span>
 <span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>length_maxima <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">40</span>, <span class="dv">41</span>, <span class="dv">35</span>, <span class="dv">42</span>, <span class="dv">31</span>) <span class="co">#cm</span></span>
 <span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co"># Fitting the model - by default fits all three models (unless stated otherwise using the `model_type` argument)</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co"># Fitting the model - by default fits all three models</span></span>
 <span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>model_fit <span class="ot">&lt;-</span> <span class="fu">fit_max_model</span>(length_maxima)</span></code></pre></div>
 <h3 id="id_2-model-diagnostics">2. Model Diagnostics</h3>
+<p>When checking to see if a model has converged, the first thing to do
+is look at the Rhat values of the parameters in the summary by printing
+the fitted model to the console (e.g., <code>model_fit</code>), Rhat
+should be less than 1.1 in early workflows, and can only really be
+trusted if less than 1.01.</p>
 <p>To check whether the models have converged, we inspect the MCMC
 traceplots. These show whether the chains mix well and explore the
 posterior without drift.</p>
+<p>For more information about how to identify and deal with Stan model
+convergence issues see <a href="https://mc-stan.org/learn-stan/diagnostics-warnings.html">https://mc-stan.org/learn-stan/diagnostics-warnings.html</a>
+.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># check for convergence</span></span>
 <span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="fu">plot_traceplot</span>(model_fit)</span></code></pre></div>
 <p>Example of a good-mixing in MCMC traceplot:

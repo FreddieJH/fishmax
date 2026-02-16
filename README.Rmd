@@ -64,7 +64,7 @@ The first step is to fit the lmax estimation models. There are three models, tha
 
 length_maxima <- c(40, 41, 35, 42, 31) #cm
 
-# Fitting the model - by default fits all three models (unless stated otherwise using the `model_type` argument)
+# Fitting the model - by default fits all three models
 model_fit <- fit_max_model(length_maxima)
 
 ```
@@ -72,7 +72,12 @@ model_fit <- fit_max_model(length_maxima)
 
 ### 2. Model Diagnostics
 
+When checking to see if a model has converged, the first thing to do is look at the Rhat values of the parameters in the summary by printing the fitted model to the console (e.g., `model_fit`), Rhat should be less than 1.1 in early workflows, and can only really be trusted if less than 1.01. 
+
 To check whether the models have converged, we inspect the MCMC traceplots. These show whether the chains mix well and explore the posterior without drift. 
+
+For more information about how to identify and deal with Stan model convergence issues see https://mc-stan.org/learn-stan/diagnostics-warnings.html . 
+
 
 ```{r traceplot}
 # check for convergence
