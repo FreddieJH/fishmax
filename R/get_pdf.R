@@ -9,17 +9,22 @@
 #' @param ci Credible interval width (default = 0.8)
 #' @param k Integer. Number of samples to be used in the estimation of the EFS PDF (default = 20)
 #'
+#' @importFrom truncnorm dtruncnorm ptruncnorm
+#'
 #' @return Named list of tibbles with size and PDF estimates for each model.
 #' @export
 get_pdf <- function(fit, xmin = 0, xmax = 300, xstep = 1, ci = 0.8, k = 20) {
+  .validate_fit(fit)
+  .validate_ci(ci)
+  .validate_k(k)
 
-  
   fit_slim <- fit[names(fit) != "maxima"]
   posterior_list <- get_posterior(fit_slim)
   sizes <- seq(xmin, xmax, xstep)
+  model_names <- names(fit_slim)
 
   output_list <- lapply(
-    names(fit_slim),
+    model_names,
     function(model_name) {
       result <- compute_pdf_single(
         posterior_list[[model_name]],
@@ -30,7 +35,7 @@ get_pdf <- function(fit, xmin = 0, xmax = 300, xstep = 1, ci = 0.8, k = 20) {
       cbind(model = model_name, result, stringsAsFactors = FALSE)
     }
   )
-  names(output_list) <- names(fit_slim)
+  names(output_list) <- model_names
   output_list[["maxima"]] <- fit[["maxima"]]
   return(output_list)
 }
@@ -69,18 +74,20 @@ compute_pdf_single <- function(posterior_samples, sizes, ci, k) {
         seq_len(nrow(posterior_samples)),
         function(i) {
           cdf <- function(y) {
-            ptnorm(
+            truncnorm::ptruncnorm(
               q = y,
               mean = posterior_samples$mu[i],
-              sd = posterior_samples$sigma[i]
+              sd = posterior_samples$sigma[i],
+              a = 0
             )
           }
 
           pdf <- function(y) {
-            dtnorm(
+            truncnorm::dtruncnorm(
               x = y,
               mean = posterior_samples$mu[i],
-              sd = posterior_samples$sigma[i]
+              sd = posterior_samples$sigma[i],
+              a = 0
             )
           }
 

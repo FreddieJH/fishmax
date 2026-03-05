@@ -4,19 +4,13 @@
 #'
 #' @param fit Named list of CmdStanMCMC objects
 #'
+#' @importFrom truncnorm dtruncnorm ptruncnorm
 #' @return Named list of vectors containing posterior samples for each model
 #' @export
 lmax_posterior <- function(fit, ci = 0.8, k = 20) {
-  validate_fit(fit)
-
-  # Validate parameters
-  if (!is.numeric(ci) || length(ci) != 1 || ci <= 0 || ci >= 1) {
-    stop("'ci' must be a single numeric value between 0 and 1", call. = FALSE)
-  }
-
-  if (!is.numeric(k) || length(k) != 1 || k <= 0) {
-    stop("'k' must be a single positive numeric value", call. = FALSE)
-  }
+  .validate_fit(fit)
+  .validate_ci(ci)
+  .validate_k(k)
 
   fit_slim <- fit[names(fit) != "maxima"]
   posterior_list <- get_posterior(fit_slim)
@@ -48,8 +42,12 @@ lmax_posterior <- function(fit, ci = 0.8, k = 20) {
       ),
       tnorm = mapply(
         function(mu, sigma, lambda) {
-          cdf <- function(x) ptnorm(q = x, mean = mu, sd = sigma)
-          pdf <- function(x) dtnorm(x = x, mean = mu, sd = sigma)
+          cdf <- function(x) {
+            truncnorm::ptruncnorm(q = x, mean = mu, sd = sigma, a = 0)
+          }
+          pdf <- function(x) {
+            truncnorm::dtruncnorm(x = x, mean = mu, sd = sigma, a = 0)
+          }
 
           gmax <- function(x) {
             max_pdf(x = x, n = lambda * k, cdf = cdf, pdf = pdf)

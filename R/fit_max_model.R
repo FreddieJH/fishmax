@@ -25,7 +25,6 @@
 #' @return If a single model is fitted, returns a CmdStanMCMC object. If multiple
 #'   models are fitted, returns a named list of CmdStanMCMC objects.
 #'
-#' @importFrom checkmate assert assert_numeric assert_list assert_int test_numeric test_list
 #' @export
 #'
 #' @examples
@@ -49,141 +48,32 @@ fit_max_model <- function(
   max_treedepth = 12,
   refresh = 1000
 ) {
-  check_cmdstan()
-  # Input validation
-  x <- unique(length_maxima)
-  is_numeric_vec <- is.numeric(x) &&
-    all(is.finite(x)) &&
-    !anyNA(x) &&
-    length(x) >= 3
+  .check_cmdstan()
+  .validate_maxima(length_maxima)
+  .validate_modelname(model_type)
 
-  is_list_numeric <- is.list(x) &&
-    length(x) >= 3 &&
-    all(vapply(x, is.numeric, logical(1)))
+  .validate_chains(chains)
+  .validate_iterations(iter_warmup)
+  .validate_iterations(iter_sampling)
 
-  if (!is_numeric_vec && !is_list_numeric) {
-    stop(
-      "`length_maxima` must be either:\n",
-      "  - a numeric vector (finite, no missing values), or\n",
-      "  - a list of numeric vectors\n",
-      "with at least three unique values.",
-      call. = FALSE
-    )
+  model_type <- .remove_efsmm_ifnotlist(length_maxima, model_type)
+
+  if (length(model_type) < 1) {
+    stop("Please provide at least one suitable model type")
   }
-
-  # If list, check at least one vector has length > 1 (for EFSMM)
-  if (is.list(length_maxima)) {
-    if (!any(lengths(length_maxima) > 1)) {
-      stop(
-        "When length_maxima is a list, at least one vector must have length > 1",
-        call. = FALSE
+  fits <-
+    lapply(model_type, function(mtype) {
+      .fit_single_model(
+        maxima_list = as.list(length_maxima),
+        model_type = mtype,
+        chains = chains,
+        iter_warmup = iter_warmup,
+        iter_sampling = iter_sampling,
+        adapt_delta = adapt_delta,
+        max_treedepth = max_treedepth,
+        refresh = refresh
       )
-    }
-    # Check all elements are numeric and finite
-    if (
-      !all(vapply(
-        length_maxima,
-        function(x) {
-          is.numeric(x) && all(is.finite(x)) && !anyNA(x)
-        },
-        logical(1)
-      ))
-    ) {
-      stop(
-        "All elements in length_maxima list must be numeric, finite, and non-missing",
-        call. = FALSE
-      )
-    }
-  }
-
-  # Validate model_type selection
-  all_models <- c("evt", "evt_gumbel", "efs", "efsmm")
-  if (missing(model_type)) {
-    if (is.list(length_maxima)) {
-      model_type <- all_models
-    } else {
-      model_type <- all_models[which(all_models != "efsmm")]
-    }
-  } else {
-    # check for invalid values
-    invalid <- setdiff(model_type, all_models)
-    if (length(invalid) > 0) {
-      stop(
-        "Invalid model_type: ",
-        paste(invalid, collapse = ", "),
-        ". Must be one of: ",
-        paste(all_models, collapse = ", "),
-        call. = FALSE
-      )
-    }
-
-    model_type <- match.arg(model_type, several.ok = TRUE)
-  }
-
-  # Check EFSMM only used with list input
-  if ("efsmm" %in% model_type && !is.list(length_maxima)) {
-    stop(
-      "model_type 'efsmm' requires length_maxima to be a list",
-      call. = FALSE
-    )
-  }
-
-  # # Check non-EFSMM models not used with multiple values per sample
-  # if (is.list(length_maxima) && any(lengths(length_maxima) > 1)) {
-  #   invalid_models <- setdiff(model_type, "efsmm")
-  #   if (length(invalid_models) > 0) {
-  #     stop(
-  #       "Models ",
-  #       paste(invalid_models, collapse = ", "),
-  #       " cannot handle multiple values per sample. Use 'efsmm' only.",
-  #       call. = FALSE
-  #     )
-  #   }
-  # }
-
-  if (
-    !is.numeric(chains) || length(chains) != 1 || chains < 1 || chains %% 1 != 0
-  ) {
-    stop("`chains` must be a single integer >= 1.", call. = FALSE)
-  }
-
-  if (
-    !is.numeric(iter_warmup) ||
-      length(iter_warmup) != 1 ||
-      iter_warmup < 100 ||
-      iter_warmup %% 1 != 0
-  ) {
-    stop("`iter_warmup` must be a single integer >= 100.", call. = FALSE)
-  }
-
-  if (
-    !is.numeric(iter_sampling) ||
-      length(iter_sampling) != 1 ||
-      iter_sampling < 100 ||
-      iter_sampling %% 1 != 0
-  ) {
-    stop("`iter_sampling` must be a single integer >= 100.", call. = FALSE)
-  }
-  # Convert to list format
-  maxima_list <- if (is.list(length_maxima)) {
-    length_maxima
-  } else {
-    as.list(length_maxima)
-  }
-
-  # Fit each model
-  fits <- lapply(model_type, function(mtype) {
-    fit_single_model(
-      maxima_list = maxima_list,
-      model_type = mtype,
-      chains = chains,
-      iter_warmup = iter_warmup,
-      iter_sampling = iter_sampling,
-      adapt_delta = adapt_delta,
-      max_treedepth = max_treedepth,
-      refresh = refresh
-    )
-  })
+    })
 
   names(fits) <- model_type
   fits[["maxima"]] <- length_maxima
@@ -192,7 +82,7 @@ fit_max_model <- function(
 
 #' Fit a single model type
 #' @noRd
-fit_single_model <- function(
+.fit_single_model <- function(
   maxima_list,
   model_type,
   chains,
@@ -202,78 +92,27 @@ fit_single_model <- function(
   max_treedepth,
   refresh
 ) {
-  if (model_type != "efsmm" & is.list(maxima_list)) {
-    maxima_list <- unlist(lapply(maxima_list, FUN = max))
-  }
-  mod_dat <- list(
-    x = unlist(maxima_list),
-    n_obs = length(unlist(maxima_list)),
-    n_per_sample = lengths(maxima_list),
-    start_idx = cumsum(c(0, lengths(maxima_list)[-length(maxima_list)])) + 1,
-    k = length(maxima_list)
-  )
-
-  init_func <- function(type, maxima_median) {
-    if (type %in% c("evt", "evt_gumbel")) {
-      function(chain_id) {
-        list(loc = maxima_median, scale = 10, shape = 0)
-      }
-    } else {
-      function(chain_id) {
-        list(mu = maxima_median, sigma = 10, lambda = 100)
-      }
+  if (model_type == "efsmm") {
+    .check_if_list(maxima_list)
+  } else {
+    # if not efsmm
+    if (is.list(maxima_list)) {
+      maxima_list <- unlist(lapply(maxima_list, FUN = max))
     }
   }
 
-  model_file <- system.file(
-    "stan",
-    paste0(ifelse(model_type == "efsmm", "efs", model_type), ".stan"),
-    package = "fishmax"
-  )
-
-  # validate the length_maxima vector (or list)
-  if (length(unique(unlist(lapply(maxima_list, FUN = max)))) < 3) {
-    stop("Number of unique sample maxima (k) must be at least 3", call. = FALSE)
-  }
-
-  # validate the stan file
-  if (!file.exists(model_file) || model_file == "") {
-    stop(
-      "Stan model file not found. Available files: ",
-      paste(
-        list.files(system.file("stan", package = "fishmax")),
-        collapse = ", "
-      ),
-      "\nLooking for: ",
-      paste0(ifelse(model_type == "efsmm", "efs", model_type), ".stan"),
-      call. = FALSE
-    )
-  }
-  executable_exists <- function(stan_file) {
-    exe <- sub("\\.stan$", "", stan_file)
-
-    if (.Platform$OS.type == "windows") {
-      exe <- paste0(exe, ".exe")
-    }
-
-    file.exists(exe)
-  }
+  model_file <- .find_stanfile(model_type)
+  .validate_stanfile(model_file)
+  .validate_maxima(maxima_list)
 
   cat("Fitting ", model_type, " model...\n")
-  if (!executable_exists(model_file)) {
-    message(
-      paste(
-        model_type,
-        "model not yet compiled in this machine — compilation may take several minutes..."
-      )
-    )
-  }
-  mod <- cmdstanr::cmdstan_model(model_file)
+  .compilation_message(model_file)
 
+  mod <- cmdstanr::cmdstan_model(model_file)
   fit <- mod$sample(
-    data = mod_dat,
+    data = .make_standata(maxima_list),
     chains = chains,
-    init = init_func(model_type, median(unlist(maxima_list))),
+    init = .initialise_pars(model_type, median(unlist(maxima_list))),
     iter_warmup = iter_warmup,
     iter_sampling = iter_sampling,
     adapt_delta = adapt_delta,

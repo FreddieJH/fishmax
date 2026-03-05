@@ -153,7 +153,7 @@ plot_lmax <- function(
         ggplot2::geom_vline(
           ggplot2::aes(xintercept = max_fit, col = model),
           lty = 2,
-          size = 2,
+          linewidth = 2,
           data = max_table,
           show.legend = FALSE
         )

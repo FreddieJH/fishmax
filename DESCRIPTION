@@ -8,20 +8,24 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
-Depends: 
+Depends:
     R (>= 4.1.0)
 Imports:
+    cmdstanr (>= 0.6.0),
+    instantiate,
     posterior,
-    ggplot2, 
+    ggplot2,
+    tidyr,
+    patchwork,
     rlang,
-    evd, 
-    patchwork
+    truncnorm,
+    evd
 Suggests:
     testthat (>= 3.0.0),
-    cmdstanr (>= 0.6.0)
+    knitr,
+    rmarkdown
 Additional_repositories:
     https://mc-stan.org/r-packages/
-SystemRequirements: CmdStan (https://mc-stan.org/cmdstanr/articles/cmdstanr.html)
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 LazyData: true

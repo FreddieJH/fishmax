@@ -44,7 +44,8 @@ remotes::install_github("FreddieJH/fishmax") # installs fishmax
 ## Loading of fishmax (every instance)
 
 Once you have installed the cmdstanr package, cmdstan software, and the
-fishmax package, you can load it.
+fishmax package, you can load the `fishmax` package. Note this needs to
+be for every new R session before the functions can be used.
 
 ``` r
 library(fishmax)
@@ -58,10 +59,21 @@ are 40, 41, 35, 42 and 31 cm. The total number of fish that each fisher
 caught (sample size) is unknown.
 
 The first step is to fit the lmax estimation models. There are three
-models, that each have their own assumptions: 1. Extreme Value Theory
-(using GEV distribution) - EVT (GEV) 2. Extreme Value Theory (using
-Gumbel distribution) - EVT (Gumbel) 3. Exact Finite Sample approach -
-EFS
+models, that each have their own assumptions:
+
+1.  Extreme Value Theory (using GEV distribution) - EVT (GEV)
+2.  Extreme Value Theory (using Gumbel distribution) - EVT (Gumbel)
+3.  Exact Finite Sample approach - EFS
+
+The choice of which of these models you wish to use, depends on the
+assumptions you wish to make about the shape of the underlying body size
+distribution.
+
+1.  EVT (GEV) - fewest assumptions, any assymptotic distribution
+2.  EVT (Gumbel) - assumes exponential-type (e.g., normal,
+    positive-normal, exponential, lognormal)
+3.  EFS - assumes a positive-normal distribution and where sample size
+    of each sample is derived from a poisson distribution
 
 ### 1. Model Fitting
 
@@ -223,7 +235,7 @@ EFS
 
 </table>
 
-### 4. Visualiation
+### 4. Visualisation
 
 ``` r
 # default credible interval = 80%
@@ -240,7 +252,7 @@ want a quick-and-dirty plot you can reduce the resolution of the x-axis
 
 ``` r
 
-plot_lmax(fit_single, xmax = 100, xstep = 10)
+plot_lmax(model_fit, xmax = 100, xstep = 10)
 ```
 
 <img src="man/figures/plotfit_lowres.png" width="100%" />

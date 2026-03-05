@@ -1,14 +1,9 @@
 .Rproj.user
 
-inst/stan/*.exe
-inst/stan/*.EXE
+src/stan/*.exe
+src/stan/*.EXE
 
-docs
-data/analysis.rmd
-
-# *.png
 *.exe
-
 
 /.quarto/
 **/*.quarto_ipynb

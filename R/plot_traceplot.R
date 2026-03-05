@@ -7,7 +7,10 @@
 #' @return ggplot object
 #' @export
 #' @importFrom ggplot2 ggplot aes geom_path facet_wrap theme_classic theme
+#' @importFrom tidyr pivot_longer
 plot_traceplot <- function(fit) {
+  .validate_fit(fit)
+
   posterior_samples <- get_posterior(fit)
   plots <- lapply(
     names(posterior_samples)[names(posterior_samples) != "maxima"],
@@ -16,14 +19,12 @@ plot_traceplot <- function(fit) {
 
       n_params <- ncol(ps) - 3
 
-      long <- reshape(
-        ps,
-        varying = setdiff(names(ps), c(".chain", ".iteration", ".draw")),
-        v.names = "value",
-        timevar = "name",
-        times = setdiff(names(ps), c(".chain", ".iteration", ".draw")),
-        direction = "long"
-      )
+      long <- ps |>
+        tidyr::pivot_longer(
+          cols = -c(.chain, .iteration, .draw),
+          names_to = "name",
+          values_to = "value"
+        )
 
       long$name <- ifelse(
         long$name == "lp__",

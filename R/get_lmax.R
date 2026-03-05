@@ -11,25 +11,13 @@
 #' @importFrom dplyr mutate summarise
 #' @importFrom purrr pmap_dbl map2
 get_lmax <- function(fit, ci = 0.8, k = 20) {
-  validate_fit(fit)
-
-  # validate ci
-  if (!is.numeric(ci) || length(ci) != 1 || ci <= 0 || ci >= 1) {
-    stop("'ci' must be a single numeric value between 0 and 1", call. = FALSE)
-  }
-
-  # validate k
-  if (!is.numeric(k) || length(k) != 1 || k < 3) {
-    stop(
-      "'k' must be a single positive numeric value of at least 3",
-      call. = FALSE
-    )
-  }
+  .validate_fit(fit)
+  .validate_ci(ci)
+  .validate_k(k)
 
   fit_slim <- fit[names(fit) != "maxima"]
-
-  posterior_list <- lmax_posterior(fit = fit, ci = ci, k = k)
-  output_list <- lapply(posterior_list, function(pdf) {
+  posterior_list <- lmax_posterior(fit = fit_slim, ci = ci, k = k)
+  posterior_summary_list <- lapply(posterior_list, function(pdf) {
     c(
       max_fit = stats::quantile(pdf, 0.5),
       max_lwr = stats::quantile(pdf, (1 - ci) / 2),
@@ -37,26 +25,23 @@ get_lmax <- function(fit, ci = 0.8, k = 20) {
     )
   })
 
-  names(output_list) <- names(fit_slim)
-  # output_list[["maxima"]] <- fit[["maxima"]]
+  names(posterior_summary_list) <- names(fit_slim)
+
   out <- do.call(
     rbind,
-    lapply(seq_along(output_list), function(i) {
+    lapply(seq_along(posterior_summary_list), function(i) {
       cbind(
-        model = names(output_list)[i],
-        as.data.frame(t(output_list[[i]]))
+        model = names(posterior_summary_list)[i],
+        as.data.frame(t(posterior_summary_list[[i]]))
       )
     })
-  ) |>
-    dplyr::mutate(
-      model = dplyr::case_match(
-        model,
-        "efs" ~ "EFS",
-        "evt" ~ "EVT (GEV)",
-        "evt_gumbel" ~ "EVT (Gumbel)",
-        "efsmm" ~ "EFSmm"
-      )
-    )
+  )
+  out$model <- c(
+    efs = "EFS",
+    evt = "EVT (GEV)",
+    evt_gumbel = "EVT (Gumbel)",
+    efsmm = "EFSmm"
+  )[out$model]
 
   return(out)
 }

@@ -6,7 +6,7 @@ test_that("model fit shown", {
     iter_sampling = 200,
     chains = 1
   )
-  p <- plot_fit(model_fit)
+  p <- plot_lmax(model_fit)
 
   expect_true(
     "ggplot" %in% class(p)

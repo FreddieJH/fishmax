@@ -41,14 +41,7 @@ test_that("Fits models individually", {
 test_that("EFSMM only works on lists, where at least one element of list of of length > 1", {
   set.seed(123)
   expect_error(fit_max_model(
-    c(40, 41, 35, 38),
-    iter_warmup = 200,
-    iter_sampling = 200,
-    chains = 1,
-    model_type = "efsmm"
-  ))
-  expect_error(fit_max_model(
-    list(40, 41, 35, 38),
+    length_maxima = c(40, 41, 35, 38),
     iter_warmup = 200,
     iter_sampling = 200,
     chains = 1,
