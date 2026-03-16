@@ -1,17 +1,17 @@
 
 # fishmax <img src="man/figures/fishmax_logo.png" align="right" height="150" />
 
-The goal of fishmax provides a robust method to estimate the maximum
-body length of fishes, with uncertanty. The packages uses two
-approaches, the first is from Extreme Value Theory (EVT), which shows
-that the maxima of a set of samples follows a specific distribution -
-the Generalised Extreme Value (GEV) distribution. The second approach
-uses knowledge on the underlying body size distribution to estimate the
-likely parameters of the underlying distribution that would give rise to
-the observed sample maxima. The two approaches are implemented using a
-Bayesian Framework, for this you need to first install the cmdstanr R
-package, and then install cmdstan, which is the backend C++ toolchain
-that allows you to fit the bayesian models.
+The goal of fishmax is to provide a robust method to estimate, with
+uncertanty, the maximum body length (L<sub>max</sub>) of a given fish
+species. The packages uses two approaches, the first is from Extreme
+Value Theory (EVT), which shows that the maxima of a set of samples
+follows a specific distribution - the Generalised Extreme Value (GEV)
+distribution. The second approach uses knowledge on the underlying body
+size distribution to estimate the likely parameters of the underlying
+distribution that would give rise to the observed sample maxima. The two
+approaches are implemented using a Bayesian Framework, for this you need
+to first install the cmdstanr R package, and then install cmdstan, which
+is the backend C++ toolchain that allows you to fit the bayesian models.
 
 ## Installation of cmdstan (once per machine)
 
@@ -109,11 +109,11 @@ plot_traceplot(model_fit) # check out traceplots
 ```
 
 Example of a good-mixing in MCMC traceplot:
-<img src="man/figures/good_traceplot.png" width="100%" />
+<img src="man/figures/good_traceplot.png" alt="" width="100%" />
 
 Example of potenital issues in MCMC traceplot, notice how chains are
 struggling to converge on a parameter value:
-<img src="man/figures/bad_traceplot.png" width="100%" />
+<img src="man/figures/bad_traceplot.png" alt="" width="100%" />
 
 If you observe chains that are struggling to converge for a parameter
 then it is worth trying to increase the number of iterations of the
@@ -244,7 +244,7 @@ EFS
 plot_lmax(model_fit, xmax = 100)
 ```
 
-<img src="man/figures/plotfit_CI08.png" width="100%" />
+<img src="man/figures/plotfit_CI08.png" alt="" width="100%" />
 
 You can also change the resolution in your x-axis, for example if you
 want a quick-and-dirty plot you can reduce the resolution of the x-axis
@@ -255,7 +255,7 @@ want a quick-and-dirty plot you can reduce the resolution of the x-axis
 plot_lmax(model_fit, xmax = 100, xstep = 10)
 ```
 
-<img src="man/figures/plotfit_lowres.png" width="100%" />
+<img src="man/figures/plotfit_lowres.png" alt="" width="100%" />
 
 ## Example 2 - more information is known per sample
 
