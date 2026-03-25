@@ -16,7 +16,7 @@ get_max <- function(fit, ci = 0.8, k = 20) {
   .validate_k(k)
 
   fit_slim <- fit[names(fit) != "maxima"]
-  posterior_list <- lmax_posterior(fit = fit_slim, ci = ci, k = k)
+  posterior_list <- max_posterior(fit = fit_slim, ci = ci, k = k)
   posterior_summary_list <- lapply(posterior_list, function(pdf) {
     c(
       max_fit = stats::quantile(pdf, 0.5),
