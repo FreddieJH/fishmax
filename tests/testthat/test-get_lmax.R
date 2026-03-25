@@ -1,7 +1,7 @@
-test_that("estimates consitent Lmax value", {
+test_that("estimates consitent max value", {
   set.seed(123)
   model_fit <- fit_max_model(c(40, 41, 35, 38))
-  max_estimates <- get_lmax(model_fit)
+  max_estimates <- get_max(model_fit)
   expect_equal(class(max_estimates), c("data.frame"))
   expect_equal(nrow(max_estimates), 3)
   expect_equal(as.numeric(round(max_estimates$max_fit[1], 1)), 47.6)

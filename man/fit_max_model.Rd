@@ -2,7 +2,7 @@
 % Please edit documentation in R/fit_max_model.R
 \name{fit_max_model}
 \alias{fit_max_model}
-\title{Fit LMAX model to a set of length maxima}
+\title{Fit max model to a set of length maxima}
 \usage{
 fit_max_model(
   length_maxima,

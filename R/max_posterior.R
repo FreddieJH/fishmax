@@ -3,17 +3,20 @@
 #' Extracts posterior samples from fitted models and estimates the lmax given the parameter posteriors
 #'
 #' @param fit Named list of CmdStanMCMC objects
+#' @param ci Credible interval width (default = 0.8)
+#' @param k Integer. Number of samples to be used in the estimation of the EFS PDF (default = 20)
+#' @param upper_boundary Upper search range for the maximum. Default is 500, but increase if expecting larger values.
 #'
 #' @importFrom truncnorm dtruncnorm ptruncnorm
 #' @return Named list of vectors containing posterior samples for each model
 #' @export
-lmax_posterior <- function(fit, ci = 0.8, k = 20) {
+max_posterior <- function(fit, ci = 0.8, k = 20, upper_boundary = 500) {
   .validate_fit(fit)
   .validate_ci(ci)
   .validate_k(k)
 
   fit_slim <- fit[names(fit) != "maxima"]
-  posterior_list <- get_posterior(fit_slim)
+  posterior_list <- .get_posterior(fit_slim)
   output_list <- lapply(posterior_list, function(ps) {
     cn <- colnames(ps)
 
@@ -53,7 +56,7 @@ lmax_posterior <- function(fit, ci = 0.8, k = 20) {
             max_pdf(x = x, n = lambda * k, cdf = cdf, pdf = pdf)
           }
 
-          mode_f(gmax)
+          mode_f(gmax, upr = upper_boundary)
         },
         ps$mu,
         ps$sigma,

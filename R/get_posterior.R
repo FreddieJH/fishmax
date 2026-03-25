@@ -5,11 +5,10 @@
 #' @param fit Named list of CmdStanMCMC objects
 #'
 #' @return Named list of tibbles containing posterior samples for each model
-#' @export
 #' @importFrom posterior as_draws_df
 #' @importFrom purrr map
 #' @importFrom tibble as_tibble
-get_posterior <- function(fit) {
+.get_posterior <- function(fit) {
   .validate_fit(fit)
   fit_slim <- fit[names(fit) != "maxima"]
 

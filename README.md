@@ -124,7 +124,7 @@ model.
 ``` r
 # default credible interval = 80%
 # default Lmax estimation is the 20-sample Lmax (k = 20) - Recommended
-get_lmax(model_fit)
+get_max(model_fit)
 ```
 
 <table>
@@ -241,7 +241,7 @@ EFS
 # default credible interval = 80%
 # default Lmax estimation is the 20-sample Lmax (k = 20) - Recommended
 # x-axis range default is 0 to 100, but can be changed using the xmin and xmax arguments
-plot_lmax(model_fit, xmax = 100)
+plot_max(model_fit, xmax = 100)
 ```
 
 <img src="man/figures/plotfit_CI08.png" alt="" width="100%" />
@@ -252,7 +252,7 @@ want a quick-and-dirty plot you can reduce the resolution of the x-axis
 
 ``` r
 
-plot_lmax(model_fit, xmax = 100, xstep = 10)
+plot_max(model_fit, xmax = 100, xstep = 10)
 ```
 
 <img src="man/figures/plotfit_lowres.png" alt="" width="100%" />
@@ -284,8 +284,8 @@ length_maxima_multiple <- list(c(40, 39), 41, c(33, 34, 35), c(42, 40, 39), 31)
 
 model_fit_multiple <- fit_max_model(length_maxima_multiple) # model fitting
 plot_traceplot(model_fit_multiple) # check model diagnostics
-get_lmax(model_fit_multiple) # output Lmax estimates
-plot_lmax(model_fit_multiple) # plot the lmax estimates
+get_max(model_fit_multiple) # output Lmax estimates
+plot_max(model_fit_multiple) # plot the lmax estimates
 ```
 
 ## Example 3 - Estimating $L_{max}$ for multiple species
@@ -306,7 +306,7 @@ spp_maxima_list <-
 spp_maxima_list_fits <- lapply(X = spp_maxima_list, FUN = fit_max_model)
 spp_maxima_list_lmax <- lapply(
   X = spp_maxima_list_fits,
-  FUN = get_lmax,
+  FUN = get_max,
   ci = 0.8,
   k = 20
 )

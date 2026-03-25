@@ -19,7 +19,7 @@ get_pdf <- function(fit, xmin = 0, xmax = 300, xstep = 1, ci = 0.8, k = 20) {
   .validate_k(k)
 
   fit_slim <- fit[names(fit) != "maxima"]
-  posterior_list <- get_posterior(fit_slim)
+  posterior_list <- .get_posterior(fit_slim)
   sizes <- seq(xmin, xmax, xstep)
   model_names <- names(fit_slim)
 

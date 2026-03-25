@@ -11,10 +11,9 @@
 #'
 #' @return Combined ggplot object
 #' @export
-#' @importFrom ggplot2 ggplot aes geom_ribbon geom_line geom_rug scale_x_continuous labs theme_classic
-#' @importFrom scales label_number
-#' @importFrom dplyr tibble
-plot_lmax <- function(
+#' @importFrom ggplot2 ggplot aes geom_ribbon geom_line geom_rug scale_x_continuous labs theme_classic layer_scales
+#' @importFrom dplyr tibble mutate bind_rows recode_values distinct
+plot_max <- function(
   fit,
   xmin = 0,
   xmax = 100,
@@ -22,7 +21,10 @@ plot_lmax <- function(
   ci = 0.8,
   k = 20,
   show_annotations = TRUE,
-  col_pallette = c("#2E86AB", "#9e7948ff", "#C77BA0", "#7e348dff")
+  col_pallette = c("#2E86AB", "#9e7948ff", "#C77BA0", "#7e348dff"),
+  yaxis_title = "Probability density",
+  xaxis_title = "Body size, cm",
+  xaxis_title_panelB = expression(paste("Estimated ", L[max], ", cm"))
 ) {
   maxima_vals <- unlist(lapply(fit[["maxima"]], FUN = max))
   # k <- length(maxima_vals)
@@ -80,7 +82,7 @@ plot_lmax <- function(
     dplyr::distinct(model, model_colour) |>
     with(setNames(model_colour, model))
 
-  max_table <- get_lmax(fit_slim, k = k, ci = ci)
+  max_table <- get_max(fit_slim, k = k, ci = ci)
   colnames(max_table) <- gsub("\\.[0-9]+%", "", colnames(max_table))
 
   percentile_percent <- (1 - (1 / k)) * 100
@@ -145,7 +147,7 @@ plot_lmax <- function(
       inherit.aes = FALSE
     ) +
     ggplot2::scale_x_continuous(
-      labels = scales::label_number(suffix = "cm"),
+      # labels = scales::label_number(suffix = "cm"),s
       limits = c(xmin, xmax)
     ) +
     {
@@ -162,8 +164,8 @@ plot_lmax <- function(
     ggplot2::scale_color_manual(values = color_map_by_label) +
     ggplot2::scale_fill_manual(values = color_map_by_label) +
     ggplot2::labs(
-      x = "Body size",
-      y = "Probability density",
+      x = xaxis_title,
+      y = yaxis_title,
       fill = NULL,
       col = NULL
     ) +
@@ -190,9 +192,9 @@ plot_lmax <- function(
       width = 0
     ) +
     ggplot2::geom_point(size = 5) +
-    ggplot2::labs(y = NULL, x = expression(paste("Estimated ", L[max]))) +
+    ggplot2::labs(y = NULL, x = xaxis_title_panelB) +
     ggplot2::scale_x_continuous(
-      labels = scales::label_number(suffix = "cm"),
+      # labels = scales::label_number(suffix = "cm"),
       limits = ggplot2::layer_scales(p_main)$x$range$range
     ) +
     ggplot2::scale_color_manual(values = color_map_by_label) +

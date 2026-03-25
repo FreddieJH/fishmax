@@ -1,4 +1,4 @@
-#' Fit LMAX model to a set of length maxima
+#' Fit max model to a set of length maxima
 #'
 #' Fits a Bayesian model to a set of length maxima, using one of two approaches:
 #' Extreme Value Theory (EVT) or Exact-Finite Sampling (EFS).

@@ -11,7 +11,7 @@
 plot_traceplot <- function(fit) {
   .validate_fit(fit)
 
-  posterior_samples <- get_posterior(fit)
+  posterior_samples <- .get_posterior(fit)
   plots <- lapply(
     names(posterior_samples)[names(posterior_samples) != "maxima"],
     function(model_name) {
