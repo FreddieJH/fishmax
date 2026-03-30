@@ -12,7 +12,8 @@ fit_max_model(
   iter_sampling = 1000,
   adapt_delta = 0.999,
   max_treedepth = 12,
-  refresh = 1000
+  refresh = 1000,
+  ...
 )
 }
 \arguments{
@@ -36,6 +37,8 @@ be fitted (default: all models).}
 \item{adapt_delta}{Numeric. cmdstanR argument, see cmdstanR documentation (default: 0.999).}
 
 \item{max_treedepth}{Integer. cmdstanR argument, see cmdstanR documentation (default: 12).}
+
+\item{...}{further arguments passed to the cmdstanr sample function}
 }
 \value{
 If a single model is fitted, returns a CmdStanMCMC object. If multiple

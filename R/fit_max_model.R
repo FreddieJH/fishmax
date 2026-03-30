@@ -21,6 +21,7 @@
 #' @param iter_sampling Integer. Number of sampling iterations (default: 1000).
 #' @param adapt_delta Numeric. cmdstanR argument, see cmdstanR documentation (default: 0.999).
 #' @param max_treedepth Integer. cmdstanR argument, see cmdstanR documentation (default: 12).
+#' @param ... further arguments passed to the cmdstanr sample function
 #'
 #' @return If a single model is fitted, returns a CmdStanMCMC object. If multiple
 #'   models are fitted, returns a named list of CmdStanMCMC objects.
@@ -46,7 +47,8 @@ fit_max_model <- function(
   iter_sampling = 1000,
   adapt_delta = 0.999,
   max_treedepth = 12,
-  refresh = 1000
+  refresh = 1000,
+  ...
 ) {
   .check_cmdstan()
   .validate_maxima(length_maxima)
@@ -71,7 +73,8 @@ fit_max_model <- function(
         iter_sampling = iter_sampling,
         adapt_delta = adapt_delta,
         max_treedepth = max_treedepth,
-        refresh = refresh
+        refresh = refresh,
+        ...
       )
     })
 
@@ -90,7 +93,8 @@ fit_max_model <- function(
   iter_sampling,
   adapt_delta,
   max_treedepth,
-  refresh
+  refresh,
+  ...
 ) {
   if (model_type == "efsmm") {
     .check_if_list(maxima_list)
@@ -117,7 +121,8 @@ fit_max_model <- function(
     iter_sampling = iter_sampling,
     adapt_delta = adapt_delta,
     max_treedepth = max_treedepth,
-    refresh = refresh
+    refresh = refresh,
+    ...
   )
 
   return(fit)
