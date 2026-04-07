@@ -20,7 +20,8 @@ plot_max <- function(
   xstep = 1,
   ci = 0.8,
   k = 20,
-  show_annotations = TRUE,
+  show_title = FALSE,
+  show_lines = TRUE,
   col_pallette = c("#2E86AB", "#9e7948ff", "#C77BA0", "#7e348dff"),
   yaxis_title = "Probability density",
   xaxis_title = "Body size, cm",
@@ -151,7 +152,7 @@ plot_max <- function(
       limits = c(xmin, xmax)
     ) +
     {
-      if (show_annotations) {
+      if (show_lines) {
         ggplot2::geom_vline(
           ggplot2::aes(xintercept = max_fit, col = model),
           lty = 2,
@@ -170,7 +171,7 @@ plot_max <- function(
       col = NULL
     ) +
     {
-      if (show_annotations) {
+      if (show_title) {
         ggplot2::labs(
           subtitle = build_subtitle(unique(pdf_tbl$model), k)
         )
