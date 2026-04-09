@@ -1,6 +1,8 @@
 
 # fishmax <img src="man/figures/fishmax_logo.png" align="right" height="150" />
 
+[![R-CMD-check.yaml](https://github.com/FreddieJH/fishmax/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/FreddieJH/fishmax/actions/workflows/R-CMD-check.yaml)
+
 The goal of fishmax is to provide a robust method to estimate, with
 uncertanty, the maximum body length (L<sub>max</sub>) of a given fish
 species. The packages uses two approaches, the first is from Extreme

@@ -12,7 +12,9 @@ knitr::opts_chunk$set(
 ```
 
 
+
 # fishmax <img src="man/figures/fishmax_logo.png" align="right" height="150" />
+[![R-CMD-check.yaml](https://github.com/FreddieJH/fishmax/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/FreddieJH/fishmax/actions/workflows/R-CMD-check.yaml)
 
 The goal of fishmax is to provide a robust method to estimate, with uncertanty, the maximum body length (L<sub>max</sub>) of a given fish species. The packages uses two approaches, the first is from Extreme Value Theory (EVT), which shows that the maxima of a set of samples follows a specific distribution - the Generalised Extreme Value (GEV) distribution. The second approach uses knowledge on the underlying body size distribution to estimate the likely parameters of the underlying distribution that would give rise to the observed sample maxima. The two approaches are implemented using a Bayesian Framework, for this you need to first install the cmdstanr R package, and then install cmdstan, which is the backend C++ toolchain that allows you to fit the bayesian models. 
 
