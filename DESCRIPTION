@@ -1,6 +1,6 @@
 Package: fishmax
 Title: Estimation of Fish Maximum Length
-Version: 1.0.1
+Version: 1.0.2
 Authors@R: 
     person("Freddie", "Heather", , "freddieheather@gmail.com", role = c("aut", "cre"))
 Description: Uses two methods to estimate the maximum length (Lmax) of a fish population from data on sample maxima.
