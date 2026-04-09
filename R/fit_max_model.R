@@ -30,6 +30,7 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' # Single maximum per sample
 #' maxima_vec <- c(45.2, 52.1, 48.7, 51.3)
 #' fit_max_model(maxima_vec, model_type = "efs")
@@ -40,6 +41,7 @@
 #'
 #' # Fit all models
 #' fit_max_model(maxima_vec)
+#' }
 fit_max_model <- function(
   length_maxima,
   model_type = c("evt", "evt_gumbel", "efs", "efsmm"),

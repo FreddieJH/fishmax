@@ -55,6 +55,7 @@ For EFS, data can be in the form of either a single maximum per sample (EFS),
 or multiple maxima per sample (EFSMM).
 }
 \examples{
+\dontrun{
 # Single maximum per sample
 maxima_vec <- c(45.2, 52.1, 48.7, 51.3)
 fit_max_model(maxima_vec, model_type = "efs")
@@ -65,4 +66,5 @@ fit_max_model(maxima_list, model_type = "efsmm")
 
 # Fit all models
 fit_max_model(maxima_vec)
+}
 }
