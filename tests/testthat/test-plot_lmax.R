@@ -1,4 +1,9 @@
 test_that("model fit shown", {
+  testthat::skip_if_not_installed("cmdstanr")
+
+  if (cmdstanr::cmdstan_version(NULL) == "") {
+    testthat::skip("CmdStan not installed")
+  }
   set.seed(123)
   model_fit <- fit_max_model(
     c(40, 41, 35, 38),
