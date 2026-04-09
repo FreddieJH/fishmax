@@ -1,7 +1,16 @@
 test_that("model fit shown", {
   testthat::skip_if_not_installed("cmdstanr")
 
-  if (cmdstanr::cmdstan_version(NULL) == "") {
+  cmdstan_installed <- tryCatch(
+    {
+      !is.null(cmdstanr::cmdstan_version())
+    },
+    error = function(e) {
+      FALSE # Will be FALSE if CmdStan is not installed
+    }
+  )
+
+  if (!cmdstan_installed) {
     testthat::skip("CmdStan not installed")
   }
   set.seed(123)

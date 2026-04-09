@@ -1,7 +1,16 @@
 test_that("model fitting outputs a list, including the input vector (maxima values)", {
   testthat::skip_if_not_installed("cmdstanr")
 
-  if (cmdstanr::cmdstan_version(NULL) == "") {
+  cmdstan_installed <- tryCatch(
+    {
+      !is.null(cmdstanr::cmdstan_version())
+    },
+    error = function(e) {
+      FALSE # Will be FALSE if CmdStan is not installed
+    }
+  )
+
+  if (!cmdstan_installed) {
     testthat::skip("CmdStan not installed")
   }
   set.seed(123)
@@ -14,7 +23,16 @@ test_that("model fitting outputs a list, including the input vector (maxima valu
 test_that("model fitting requires numeric values only", {
   testthat::skip_if_not_installed("cmdstanr")
 
-  if (cmdstanr::cmdstan_version(NULL) == "") {
+  cmdstan_installed <- tryCatch(
+    {
+      !is.null(cmdstanr::cmdstan_version())
+    },
+    error = function(e) {
+      FALSE # Will be FALSE if CmdStan is not installed
+    }
+  )
+
+  if (!cmdstan_installed) {
     testthat::skip("CmdStan not installed")
   }
   expect_error(fit_max_model(c(40, "50")))
@@ -23,7 +41,16 @@ test_that("model fitting requires numeric values only", {
 test_that("Fits models individually", {
   testthat::skip_if_not_installed("cmdstanr")
 
-  if (cmdstanr::cmdstan_version(NULL) == "") {
+  cmdstan_installed <- tryCatch(
+    {
+      !is.null(cmdstanr::cmdstan_version())
+    },
+    error = function(e) {
+      FALSE # Will be FALSE if CmdStan is not installed
+    }
+  )
+
+  if (!cmdstan_installed) {
     testthat::skip("CmdStan not installed")
   }
   set.seed(123)
@@ -56,7 +83,16 @@ test_that("Fits models individually", {
 test_that("EFSMM only works on lists, where at least one element of list of of length > 1", {
   testthat::skip_if_not_installed("cmdstanr")
 
-  if (cmdstanr::cmdstan_version(NULL) == "") {
+  cmdstan_installed <- tryCatch(
+    {
+      !is.null(cmdstanr::cmdstan_version())
+    },
+    error = function(e) {
+      FALSE # Will be FALSE if CmdStan is not installed
+    }
+  )
+
+  if (!cmdstan_installed) {
     testthat::skip("CmdStan not installed")
   }
   set.seed(123)
@@ -72,7 +108,16 @@ test_that("EFSMM only works on lists, where at least one element of list of of l
 test_that("EFSMM only works on lists", {
   testthat::skip_if_not_installed("cmdstanr")
 
-  if (cmdstanr::cmdstan_version(NULL) == "") {
+  cmdstan_installed <- tryCatch(
+    {
+      !is.null(cmdstanr::cmdstan_version())
+    },
+    error = function(e) {
+      FALSE # Will be FALSE if CmdStan is not installed
+    }
+  )
+
+  if (!cmdstan_installed) {
     testthat::skip("CmdStan not installed")
   }
   set.seed(123)

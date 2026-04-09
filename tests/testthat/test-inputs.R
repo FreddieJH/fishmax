@@ -1,7 +1,16 @@
 test_that("Input validations", {
   testthat::skip_if_not_installed("cmdstanr")
 
-  if (cmdstanr::cmdstan_version(NULL) == "") {
+  cmdstan_installed <- tryCatch(
+    {
+      !is.null(cmdstanr::cmdstan_version())
+    },
+    error = function(e) {
+      FALSE # Will be FALSE if CmdStan is not installed
+    }
+  )
+
+  if (!cmdstan_installed) {
     testthat::skip("CmdStan not installed")
   }
   expect_error(fit_max_model(c(10, 12))) # too few k
