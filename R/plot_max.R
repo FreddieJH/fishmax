@@ -3,11 +3,16 @@
 #' Creates publication-ready plots comparing EVT and EFS model fits
 #'
 #' @param fit Model fit object
-#' @param xmin,xmax Bounds of x-axis (Lmax)
-#' @param xstep Resolution of x-axis, larger step size = lower resolution = faster to run
-#' @param ci Credible interval width (default = 0.8)
-#' @param k The k-sample Lmax for estimation. Note that this is not necessarily the number of sample maxima used to fit the model (default: 20)
-#' @param text_overlay Set to FALSE to remove the vertical line and text overlay on the plot
+#' @param xmin,xmax Numeric. Bounds of x-axis (Lmax)
+#' @param xstep Numeric. Resolution of x-axis, larger step size = lower resolution = faster to run
+#' @param ci Numeric between 0 and 1. Credible interval width (default = 0.8)
+#' @param k Integer. The k-sample Lmax for estimation. Note that this is not necessarily the number of sample maxima used to fit the model (default: 20)
+#' @param show_title Character string. Explanatory title for the vertical lines
+#' @param show_lines Character string. Vertial lines on plots to indicate Lmax estimates
+#' @param col_pallette Colour palette for each model used
+#' @param yaxis_title Title for Y axis (upper plot)
+#' @param xaxis_title Title for X axis (upper plot)
+#' @param xaxis_title_panelB Title for X axis (lower plot)
 #'
 #' @return Combined ggplot object
 #' @export

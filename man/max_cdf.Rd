@@ -4,14 +4,14 @@
 \alias{max_cdf}
 \title{CDF of the maximum of n samples}
 \usage{
-max_cdf(l, n, cdf)
+max_cdf(x, n, cdf)
 }
 \arguments{
+\item{x}{Numeric vector of values at which to evaluate the CDF}
+
 \item{n}{Single positive integer: number of i.i.d. samples}
 
 \item{cdf}{Function returning the CDF F(x)}
-
-\item{x}{Numeric vector of values at which to evaluate the CDF}
 }
 \value{
 Numeric vector of CDF values for the maximum
@@ -26,14 +26,14 @@ For i.i.d. samples, the CDF of the maximum is
 }
 \examples{
 # Standard normal distribution
-max_cdf(l = c(1, 1.5), n = 10, cdf = pnorm)
+max_cdf(x = c(1, 1.5), n = 10, cdf = pnorm)
 
 # Normal with mean = 5, sd = 2
-max_cdf(l = 6, n = 10, cdf = \(x) pnorm(l, 5, 2))
+max_cdf(x = 6, n = 10, cdf = \(x) pnorm(x, 5, 2))
 
 # Exponential with rate = 0.5
-max_cdf(l = 2, n = 5, cdf = \(x) pexp(l, 0.5))
+max_cdf(x = 2, n = 5, cdf = \(x) pexp(x, 0.5))
 
 # Beta distribution
-max_cdf(l = 0.7, n = 8, cdf = \(l) pbeta(l, 2, 5))
+max_cdf(x = 0.7, n = 8, cdf = \(x) pbeta(x, 2, 5))
 }

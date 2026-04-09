@@ -21,6 +21,7 @@
 #' @param iter_sampling Integer. Number of sampling iterations (default: 1000).
 #' @param adapt_delta Numeric. cmdstanR argument, see cmdstanR documentation (default: 0.999).
 #' @param max_treedepth Integer. cmdstanR argument, see cmdstanR documentation (default: 12).
+#' @param refresh Integer. Refresh rate of printing the number of MCMC iterations. cmdstanR argument, see cmdstanR documentation.
 #' @param ... further arguments passed to the cmdstanr sample function
 #'
 #' @return If a single model is fitted, returns a CmdStanMCMC object. If multiple
@@ -106,7 +107,7 @@ fit_max_model <- function(
   }
 
   model_file <- .find_stanfile(model_type)
-  .validate_stanfile(model_file)
+  .validate_stanfile(model_file, model_type)
   .validate_maxima(maxima_list)
 
   cat("Fitting ", model_type, " model...\n")
@@ -116,7 +117,7 @@ fit_max_model <- function(
   fit <- mod$sample(
     data = .make_standata(maxima_list),
     chains = chains,
-    init = .initialise_pars(model_type, median(unlist(maxima_list))),
+    init = .initialise_pars(model_type, stats::median(unlist(maxima_list))),
     iter_warmup = iter_warmup,
     iter_sampling = iter_sampling,
     adapt_delta = adapt_delta,

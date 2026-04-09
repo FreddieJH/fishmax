@@ -22,6 +22,7 @@
 #'
 #' # Beta distribution
 #' max_cdf_inv(n = 1000, cdf = \(x) pbeta(x, 2, 5), p = 0.95)
+#' @export
 max_cdf_inv <- function(n, cdf, p = 0.95, lwr = 0, upr = 1000) {
   # Check if root exists in initial interval
   f <- function(x) max_cdf(x, n, cdf) - p
@@ -43,5 +44,5 @@ max_cdf_inv <- function(n, cdf, p = 0.95, lwr = 0, upr = 1000) {
     if (lwr < -1e10) stop("Lower bound exceeded reasonable limit")
   }
 
-  uniroot(f, interval = c(lwr, upr))$root
+  stats::uniroot(f, interval = c(lwr, upr))$root
 }

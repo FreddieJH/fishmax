@@ -22,15 +22,25 @@ plot_max(
 \arguments{
 \item{fit}{Model fit object}
 
-\item{xmin, xmax}{Bounds of x-axis (Lmax)}
+\item{xmin, xmax}{Numeric. Bounds of x-axis (Lmax)}
 
-\item{xstep}{Resolution of x-axis, larger step size = lower resolution = faster to run}
+\item{xstep}{Numeric. Resolution of x-axis, larger step size = lower resolution = faster to run}
 
-\item{ci}{Credible interval width (default = 0.8)}
+\item{ci}{Numeric between 0 and 1. Credible interval width (default = 0.8)}
 
-\item{k}{The k-sample Lmax for estimation. Note that this is not necessarily the number of sample maxima used to fit the model (default: 20)}
+\item{k}{Integer. The k-sample Lmax for estimation. Note that this is not necessarily the number of sample maxima used to fit the model (default: 20)}
 
-\item{text_overlay}{Set to FALSE to remove the vertical line and text overlay on the plot}
+\item{show_title}{Character string. Explanatory title for the vertical lines}
+
+\item{show_lines}{Character string. Vertial lines on plots to indicate Lmax estimates}
+
+\item{col_pallette}{Colour palette for each model used}
+
+\item{yaxis_title}{Title for Y axis (upper plot)}
+
+\item{xaxis_title}{Title for X axis (upper plot)}
+
+\item{xaxis_title_panelB}{Title for X axis (lower plot)}
 }
 \value{
 Combined ggplot object

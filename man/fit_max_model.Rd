@@ -38,6 +38,8 @@ be fitted (default: all models).}
 
 \item{max_treedepth}{Integer. cmdstanR argument, see cmdstanR documentation (default: 12).}
 
+\item{refresh}{Integer. Refresh rate of printing the number of MCMC iterations. cmdstanR argument, see cmdstanR documentation.}
+
 \item{...}{further arguments passed to the cmdstanr sample function}
 }
 \value{

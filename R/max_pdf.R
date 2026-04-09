@@ -21,6 +21,7 @@
 #'
 #' # Beta distribution
 #' max_pdf(0.7, n = 8, cdf = \(x) pbeta(x, 2, 5), pdf = \(x) dbeta(x, 2, 5))
+#' @export
 max_pdf <- function(x, n, cdf, pdf) {
   n * cdf(x)^(n - 1) * pdf(x)
 }

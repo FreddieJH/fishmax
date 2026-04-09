@@ -165,7 +165,7 @@
 }
 
 
-.validate_stanfile <- function(stan_filename) {
+.validate_stanfile <- function(stan_filename, model_type) {
   if (!file.exists(stan_filename) || stan_filename == "") {
     stop(
       "Stan model file not found. Available files: ",

@@ -5,3 +5,5 @@
 ^README\.html$
 ^\.github$
 plot.png
+\.exe$
+^\.quarto$

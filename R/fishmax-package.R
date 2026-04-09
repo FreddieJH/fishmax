@@ -15,8 +15,7 @@
 #'   \item{\code{\link{fit_max_model}}}{Fit EVT or EFS models to data}
 #'   \item{\code{\link{max_posterior}}}{Extract posterior samples}
 #'   \item{\code{\link{get_max}}}{Estimate maximum size for given return period}
-#'   \item{\code{\link{get_pdf}}}{Compute probability density function}
-#'   \item{\code{\link{plot_fit}}}{Visually compare the PDFs of the fitted models}
+#'   \item{\code{\link{plot_max}}}{Visually compare the PDFs of the fitted models}
 #'   \item{\code{\link{plot_traceplot}}}{Visualise the fitting process of the models}
 #' }
 #'
@@ -45,6 +44,9 @@ if (getRversion() >= "4.1") {
     "sigma",
     "size",
     "value",
-    "x"
+    "x",
+    "model",
+    "model_colour",
+    "model_label"
   ))
 }

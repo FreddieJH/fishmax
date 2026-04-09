@@ -74,7 +74,7 @@
     message(
       paste(
         model_file,
-        "model not yet compiled in this machine — compilation may take several minutes..."
+        "model not yet compiled in this machine: compilation may take several minutes..."
       )
     )
   }

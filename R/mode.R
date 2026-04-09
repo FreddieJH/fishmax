@@ -26,7 +26,7 @@
 #' # Find mode of custom density
 #' f <- \(x) dbeta(x, shape1 = 2, shape2 = 5)
 #' mode_f(f, lwr = 0, upr = 1)
-#'
+#' @export
 mode_f <- function(f, lwr = -500, upr = 500) {
   # Evaluate at several points to find best starting region
   x_grid <- seq(lwr, upr, length.out = 100)
@@ -45,5 +45,9 @@ mode_f <- function(f, lwr = -500, upr = 500) {
     search_upr <- x_grid[min(best_idx + 10, length(x_grid))]
   }
 
-  optimise(f, interval = c(search_lwr, search_upr), maximum = TRUE)$maximum
+  stats::optimise(
+    f,
+    interval = c(search_lwr, search_upr),
+    maximum = TRUE
+  )$maximum
 }

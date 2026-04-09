@@ -38,5 +38,4 @@ mode_f(\(x) dgamma(x, shape = 3, rate = 1), lwr = 0, upr = 10)
 # Find mode of custom density
 f <- \(x) dbeta(x, shape1 = 2, shape2 = 5)
 mode_f(f, lwr = 0, upr = 1)
-
 }
