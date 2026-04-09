@@ -1,6 +1,6 @@
 Package: fishmax
 Title: Estimation of Fish Maximum Length
-Version: 1.0.0
+Version: 1.0.1
 Authors@R: 
     person("Freddie", "Heather", , "freddieheather@gmail.com", role = c("aut", "cre"))
 Description: Uses two methods to estimate the maximum length (Lmax) of a fish population from data on sample maxima.
@@ -12,20 +12,24 @@ Depends:
     R (>= 4.1.0)
 Imports:
     cmdstanr (>= 0.6.0),
-    instantiate,
     posterior,
     ggplot2,
     tidyr,
     patchwork,
-    rlang,
     truncnorm,
-    evd
+    evd, 
+    dplyr, 
+    purrr,
+    tibble, 
+    methods, 
+    glue
 Suggests:
     testthat (>= 3.0.0),
     knitr,
     rmarkdown
+Remotes:
+  stan-dev/cmdstanr
 Additional_repositories:
     https://mc-stan.org/r-packages/
-VignetteBuilder: knitr
 Config/testthat/edition: 3
 LazyData: true
