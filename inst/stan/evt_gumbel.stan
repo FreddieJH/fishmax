@@ -10,7 +10,7 @@ parameters {
 
 model {
   // Priors
-  loc ~ normal(100, 30);
+  loc ~ normal(50, 20); 
   scale ~ lognormal(0, 2); 
 
   // GUMBEL likelihood

@@ -11,9 +11,9 @@ parameters {
 
 model {
   // Priors
-   shape ~ normal(0, 0.1);
-  scale ~ normal(0, 10); 
-  loc ~ normal(0, 50);  
+  loc ~ normal(50, 20); 
+  scale ~ lognormal(0, 2); 
+  shape ~ normal(0, 0.1);
 
   // GEV likelihood
   for (i in 1:k) {

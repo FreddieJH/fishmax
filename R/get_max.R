@@ -9,7 +9,6 @@
 #' @return Named list of tibbles with maximum length estimates for each model
 #' @export
 #' @importFrom dplyr mutate summarise
-#' @importFrom purrr pmap_dbl map2
 get_max <- function(fit, ci = 0.8, k = 20) {
   .validate_fit(fit)
   .validate_ci(ci)

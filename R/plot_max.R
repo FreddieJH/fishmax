@@ -108,25 +108,27 @@ plot_max <- function(
   build_subtitle <- function(models_present, k) {
     lines <- c(
       if ("efs" %in% models_present) {
-        glue::glue("EFS distribution = Expected Lmax given {k} samples")
+        paste0("EFS distribution = Expected Lmax given ", k, " samples")
       },
 
       if ("evt" %in% models_present) {
-        glue::glue(
-          "EVT (GEV) distribution = {ordinal(round(percentile_percent))} percentile of expected Lmax given 1 sample"
+        paste0(
+          "EVT (GEV) distribution = ",
+          ordinal(round(percentile_percent)),
+          " percentile of expected Lmax given 1 sample"
         )
       },
 
       if ("evt_gumbel" %in% models_present) {
-        glue::glue(
-          "EVT (Gumbel) distribution = {ordinal(round(percentile_percent))} percentile of expected Lmax given 1 sample"
+        paste0(
+          "EVT (Gumbel) distribution = ",
+          ordinal(round(percentile_percent)),
+          " percentile of expected Lmax given 1 sample"
         )
       },
 
       if ("efsmm" %in% models_present) {
-        glue::glue(
-          "EFSmm distribution = Expected Lmax given {k} samples"
-        )
+        paste0("EFSmm distribution = Expected Lmax given ", k, " samples")
       }
     )
 
@@ -149,7 +151,7 @@ plot_max <- function(
     ggplot2::geom_line(linewidth = 2) +
     ggplot2::geom_rug(
       ggplot2::aes(x = x),
-      data = dplyr::tibble(x = maxima_vals),
+      data = data.frame(x = maxima_vals),
       inherit.aes = FALSE
     ) +
     ggplot2::scale_x_continuous(

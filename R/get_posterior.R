@@ -12,16 +12,15 @@
   .validate_fit(fit)
   fit_slim <- fit[names(fit) != "maxima"]
 
-  fit_slim |>
-    purrr::map(\(model_fit) {
-      tryCatch(
-        as_tibble(posterior::as_draws_df(model_fit)),
-        error = \(e) {
-          stop(
-            sprintf("Failed to extract posterior samples: %s", e$message),
-            call. = FALSE
-          )
-        }
-      )
-    })
+  lapply(fit_slim, function(model_fit) {
+    tryCatch(
+      as.data.frame(posterior::as_draws_df(model_fit)),
+      error = function(e) {
+        stop(
+          sprintf("Failed to extract posterior samples: %s", e$message),
+          call. = FALSE
+        )
+      }
+    )
+  })
 }

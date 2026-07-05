@@ -19,10 +19,7 @@ Imports:
     truncnorm,
     evd, 
     dplyr, 
-    purrr,
-    tibble, 
-    methods, 
-    glue
+    methods
 Suggests:
     testthat (>= 3.0.0),
     knitr,
